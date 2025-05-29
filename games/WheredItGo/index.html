@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Where'd It Go? - Never Lose Your Essentials Again</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #4A90E2 0%, #2E5BBA 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="g" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="white" stop-opacity="0.15"/><stop offset="100%" stop-color="white" stop-opacity="0"/></radialGradient></defs><circle cx="25" cy="25" r="20" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/><circle cx="75" cy="30" r="15" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/><circle cx="30" cy="75" r="18" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1.8"/><circle cx="70" cy="80" r="12" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1.2"/></svg>');
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .app-icon {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .app-icon svg {
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            animation: slideUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero .description {
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.9;
+            animation: slideUp 0.8s ease-out 0.4s both;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .app-store-btn {
+            display: inline-block;
+            transition: all 0.3s ease;
+            animation: slideUp 0.8s ease-out 0.6s both;
+        }
+
+        .app-store-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        .app-store-btn img {
+            height: 60px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+            position: relative;
+        }
+
+        .features::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(135deg, #4A90E2 0%, #2E5BBA 100%);
+            clip-path: polygon(0 100%, 100% 0, 100% 100%);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #4A90E2, #2E5BBA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4A90E2, #2E5BBA);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #4A90E2, #2E5BBA);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+
+        .feature-card p {
+            color: #718096;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            padding: 80px 0;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,0 L100,100 L0,100 Z" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></svg>');
+            opacity: 0.1;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta h2 {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .cta p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero {
+                min-height: 90vh;
+                padding: 2rem 0;
+            }
+            
+            .features {
+                padding: 60px 0;
+            }
+            
+            .feature-card {
+                padding: 2rem;
+            }
+            
+            .cta {
+                padding: 60px 0;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading animation */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        body {
+            animation: fadeIn 0.5s ease-in;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="app-icon">
+                    <img src="images/appIcon.png" alt="App Icon" width="120" height="120" style="margin-bottom: 2rem;">
+                </div>
+                <h1>Where'd It Go?</h1>
+                <p class="subtitle">Never lose your essentials again</p>
+                <p class="description">
+                    Uses Bluetooth signal strength to help you quickly locate misplaced items like your phone, laptop, or earbuds. Your go-to solution for finding lost items instantly.
+                </p>
+                <a href="https://apps.apple.com/us/app/whered-it-go/id6745577403" class="app-store-btn" target="_blank" rel="noopener">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='60' viewBox='0 0 200 60'%3E%3Crect width='200' height='60' rx='12' fill='%23000'/%3E%3Ctext x='100' y='20' font-family='Arial' font-size='10' fill='white' text-anchor='middle'%3EDownload on the%3C/text%3E%3Ctext x='100' y='40' font-family='Arial' font-size='16' font-weight='bold' fill='white' text-anchor='middle'%3EApp Store%3C/text%3E%3C/svg%3E" alt="Download on the App Store">
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40">
+                            <path d="M8 12 Q12 8 16 12" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M6 16 Q12 8 18 16" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M4 20 Q12 8 20 20" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M24 12 Q28 8 32 12" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M22 16 Q28 8 34 16" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M20 20 Q28 8 36 20" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                            <rect x="16" y="22" width="8" height="12" rx="1" fill="white" opacity="0.9"/>
+                            <path d="M22 25 L19 28 L20.5 29.5 L19 31 L22 34 L22 29.5 L23.5 31 L22 29.5 L23.5 28 L22 25 L22 29.5 Z" fill="#4A90E2"/>
+                        </svg>
+                    </div>
+                    <h3>Bluetooth Signal Tracking</h3>
+                    <p>Utilizes advanced Bluetooth signal strength technology to guide you directly to your lost items with precision and reliability.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40">
+                            <circle cx="20" cy="20" r="18" fill="none" stroke="white" stroke-width="2"/>
+                            <circle cx="20" cy="20" r="12" fill="none" stroke="white" stroke-width="2"/>
+                            <circle cx="20" cy="20" r="6" fill="none" stroke="white" stroke-width="2"/>
+                            <circle cx="20" cy="20" r="2" fill="white"/>
+                            <path d="M20 2 L24 8 L20 8 Z" fill="white"/>
+                            <path d="M38 20 L32 16 L32 20 L32 24 Z" fill="white"/>
+                            <path d="M20 38 L16 32 L20 32 L24 32 Z" fill="white"/>
+                            <path d="M2 20 L8 24 L8 20 L8 16 Z" fill="white"/>
+                        </svg>
+                    </div>
+                    <h3>Real-Time Proximity</h3>
+                    <p>Get immediate feedback as you move closer to your item. The app responds instantly to help you locate your belongings faster.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40">
+                            <ellipse cx="30" cy="12" rx="6" ry="9" fill="white" opacity="0.9"/>
+                            <circle cx="30" cy="8" r="3" fill="white"/>
+                            <circle cx="30" cy="8" r="2" fill="#4A90E2"/>
+                            <circle cx="29" cy="7" r="0.5" fill="white" opacity="0.8"/>
+                            <rect x="10" y="18" width="12" height="18" rx="2" fill="white" opacity="0.9"/>
+                            <rect x="11" y="20" width="10" height="12" rx="1" fill="#f0f8ff"/>
+                            <circle cx="16" cy="33" r="1" fill="#4A90E2"/>
+                            <rect x="13" y="22" width="6" height="1" fill="#4A90E2" opacity="0.3"/>
+                            <rect x="13" y="24" width="4" height="1" fill="#4A90E2" opacity="0.3"/>
+                            <rect x="13" y="26" width="5" height="1" fill="#4A90E2" opacity="0.3"/>
+                        </svg>
+                    </div>
+                    <h3>User-Friendly Interface</h3>
+                    <p>Simple and intuitive design makes it effortless to navigate while searching. Focus on finding your items, not figuring out the app.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Experience Peace of Mind</h2>
+                <p>Whether you're at home, in the office, or on the move, Where'd It Go? ensures your essentials are always within reach. No additional hardware required.</p>
+                <a href="https://apps.apple.com/us/app/whered-it-go/id6745577403" class="app-store-btn" target="_blank" rel="noopener">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='60' viewBox='0 0 200 60'%3E%3Crect width='200' height='60' rx='12' fill='%23000'/%3E%3Ctext x='100' y='20' font-family='Arial' font-size='10' fill='white' text-anchor='middle'%3EDownload on the%3C/text%3E%3Ctext x='100' y='40' font-family='Arial' font-size='16' font-weight='bold' fill='white' text-anchor='middle'%3EApp Store%3C/text%3E%3C/svg%3E" alt="Download on the App Store">
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Add smooth scroll behavior for better UX
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe feature cards for staggered animation
+        document.querySelectorAll('.feature-card').forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+            observer.observe(card);
+        });
+
+        // Add click tracking for app store buttons
+        document.querySelectorAll('.app-store-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Analytics tracking could go here
+                console.log('App Store button clicked');
+            });
+        });
+    </script>
+</body>
+</html>
