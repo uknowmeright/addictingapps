@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Winky Bird - Blink to Jump Adventure</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+            overflow-x: hidden;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 50%, #1f2937 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="g"><stop offset="20%" stop-color="%23ffffff" stop-opacity="0.1"/><stop offset="80%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23g)"><animateTransform attributeName="transform" attributeType="XML" type="translate" values="0,0;800,600;0,0" dur="20s" repeatCount="indefinite"/></circle><circle cx="800" cy="300" r="150" fill="url(%23g)"><animateTransform attributeName="transform" attributeType="XML" type="translate" values="0,0;-600,400;0,0" dur="25s" repeatCount="indefinite"/></circle></svg>') center/cover;
+            opacity: 0.1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content {
+            text-align: center;
+            color: white;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .logo {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffffff, #f87171);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 20px rgba(220, 38, 38, 0.3);
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: #f3f4f6;
+            font-weight: 300;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(45deg, #dc2626, #991b1b);
+            color: white;
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(220, 38, 38, 0.3);
+            border: 2px solid transparent;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(220, 38, 38, 0.4);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .features {
+            padding: 5rem 0;
+            background: #111827;
+            position: relative;
+        }
+
+        .features::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #dc2626, transparent);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            color: white;
+            background: linear-gradient(45deg, #ffffff, #dc2626);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(220, 38, 38, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .feature-card:hover::before {
+            left: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(220, 38, 38, 0.2);
+            border-color: rgba(220, 38, 38, 0.5);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #dc2626;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .feature-description {
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+
+        .gameplay {
+            padding: 5rem 0;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+        }
+
+        .gameplay-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .gameplay-text h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            color: white;
+            background: linear-gradient(45deg, #ffffff, #dc2626);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gameplay-steps {
+            list-style: none;
+        }
+
+        .gameplay-steps li {
+            background: rgba(220, 38, 38, 0.1);
+            margin-bottom: 1rem;
+            padding: 1.5rem;
+            border-radius: 15px;
+            color: #f3f4f6;
+            border-left: 4px solid #dc2626;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .gameplay-steps li:hover {
+            background: rgba(220, 38, 38, 0.2);
+            transform: translateX(10px);
+        }
+
+        .screenshot-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .screenshot {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(220, 38, 38, 0.2);
+        }
+
+        .screenshot:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 50px rgba(220, 38, 38, 0.3);
+            border-color: rgba(220, 38, 38, 0.5);
+        }
+
+        .screenshot img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .difficulty-levels {
+            padding: 5rem 0;
+            background: #111827;
+        }
+
+        .levels-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .level-card {
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .level-card.easy {
+            border-color: #10b981;
+        }
+
+        .level-card.normal {
+            border-color: #f59e0b;
+        }
+
+        .level-card.hard {
+            border-color: #dc2626;
+        }
+
+        .level-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .level-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .level-description {
+            color: #9ca3af;
+        }
+
+        .download-section {
+            padding: 5rem 0;
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 50%, #7f1d1d 100%);
+            text-align: center;
+            position: relative;
+        }
+
+        .download-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        }
+
+        .download-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .download-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: white;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .download-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            color: #f3f4f6;
+        }
+
+        .app-store-button {
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .app-store-button:hover {
+            transform: scale(1.05);
+        }
+
+        .app-store-button img {
+            height: 60px;
+            width: auto;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .tagline {
+                font-size: 1.2rem;
+            }
+
+            .gameplay-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .levels-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .screenshot-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="logo floating">🦇 Winky Bird</h1>
+                <p class="tagline">The Revolutionary Blink-to-Jump Adventure</p>
+                <a href="https://apps.apple.com/us/app/winky-bat/id6743685918" class="app-store-button">
+                    <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83" alt="Download on the App Store">
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Game Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">👁️</div>
+                    <h3 class="feature-title">Blink Control</h3>
+                    <p class="feature-description">Revolutionary eye-tracking technology lets you control your bat with just a blink. No buttons, no taps - just pure eye movement!</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏆</div>
+                    <h3 class="feature-title">Global Leaderboards</h3>
+                    <p class="feature-description">Compete with players worldwide and climb the rankings in Easy, Normal, or Hard difficulty levels.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Precision Gameplay</h3>
+                    <p class="feature-description">Test your timing and reflexes as you navigate through challenging obstacles with pixel-perfect precision.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gameplay Section -->
+    <section class="gameplay">
+        <div class="container">
+            <div class="gameplay-content">
+                <div class="gameplay-text">
+                    <h2>How to Master the Blink</h2>
+                    <ul class="gameplay-steps">
+                        <li>👁️ <strong>Blink to Jump</strong> - Your eyes control the action!</li>
+                        <li>🚧 <strong>Dodge the Bats</strong> - Time your blinks to stay in the game</li>
+                        <li>📊 <strong>Climb the Leaderboard</strong> - Compete in your chosen difficulty</li>
+                        <li>🎯 <strong>Test Your Precision</strong> - Master increasingly tricky jumps</li>
+                    </ul>
+                </div>
+                <div class="screenshot-grid">
+                    <div class="screenshot">
+                        <img src="images/screenshot1.png" alt="Main Menu" style="margin-bottom: 2rem;">
+                    </div>
+                    <div class="screenshot">
+                        <img src="images/screenshot2.png" alt="Main Menu" style="margin-bottom: 2rem;">                    
+                    </div>
+                    <div class="screenshot">
+                        <img src="images/screenshot3.png" alt="Main Menu" style="margin-bottom: 2rem;">                   
+                    </div>
+                    <div class="screenshot">
+                        <img src="images/screenshot4.png" alt="Main Menu" style="margin-bottom: 2rem;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Difficulty Levels -->
+    <section class="difficulty-levels">
+        <div class="container">
+            <h2 class="section-title">Choose Your Challenge</h2>
+            <div class="levels-grid">
+                <div class="level-card easy">
+                    <h3 class="level-title">🟢 Easy</h3>
+                    <p class="level-description">Perfect for beginners learning the blink mechanics. Wider gaps and slower pace.</p>
+                </div>
+                <div class="level-card normal">
+                    <h3 class="level-title">🟡 Normal</h3>
+                    <p class="level-description">Balanced challenge for confident players. Standard gaps with moderate speed.</p>
+                </div>
+                <div class="level-card hard">
+                    <h3 class="level-title">🔴 Hard</h3>
+                    <p class="level-description">Ultimate test for blink masters. Narrow gaps and lightning-fast reflexes required!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section class="download-section">
+        <div class="container">
+            <div class="download-content">
+                <h2 class="download-title">Ready to Master the Blink?</h2>
+                <p class="download-subtitle">Download Winky Bird now and discover a whole new way to play!</p>
+                <a href="https://apps.apple.com/us/app/winky-bat/id6743685918" class="app-store-button">
+                    <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83" alt="Download on the App Store">
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Add smooth scrolling for better UX
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add parallax effect to hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // Animate feature cards on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.6s ease-out forwards';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .level-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
