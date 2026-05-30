@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lauds: Find the Traditional Latin Mass</title>
+  <meta name="description" content="Find FSSP, ICKSP, diocesan, and SSPX Traditional Latin Masses near you or anywhere you travel. $1.99 one-time.">
+  <meta property="og:title" content="Lauds: Find the Traditional Latin Mass">
+  <meta property="og:description" content="The Traditional Latin Mass finder built for TLM Catholics. FSSP, ICKSP, diocesan, and SSPX. Clearly distinguished.">
+  <meta property="og:image" content="og-image.png">
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-ui);
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    nav {
+      background: var(--color-bg-deep);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-wordmark {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 5px;
+      color: var(--color-gold);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--color-text); }
+
+    .btn-primary {
+      background: var(--color-gold);
+      color: var(--color-bg-deep);
+      font-family: var(--font-ui);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      padding: 0.5rem 1.125rem;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn-primary:hover { opacity: 0.88; }
+
+    .btn-ghost {
+      border: 1px solid var(--color-border);
+      color: var(--color-text-muted);
+      font-size: 0.8125rem;
+      padding: 0.5rem 1.125rem;
+      border-radius: var(--radius-sm);
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-ghost:hover { border-color: var(--color-gold); color: var(--color-gold); }
+
+    .hero {
+      text-align: center;
+      padding: var(--space-xl) var(--space-md);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: var(--text-display-lg);
+      font-weight: 400;
+      line-height: 1.25;
+      color: var(--color-text);
+      margin-bottom: var(--space-xs);
+    }
+
+    .hero .subhead {
+      font-size: var(--text-body-md);
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-md);
+    }
+
+    .hero-ctas {
+      display: inline-flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .screenshot-section {
+      background: var(--color-bg-deep);
+      padding: var(--space-lg) var(--space-md);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .screenshot-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      gap: var(--space-md);
+      max-width: 880px;
+      margin: 0 auto;
+    }
+
+    .shot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .iphone-mock {
+      width: 220px;
+      aspect-ratio: 9 / 19.45;
+      background: var(--color-surface);
+      border-radius: 32px;
+      border: 1.5px solid #343456;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+    }
+
+    .iphone-mock img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .shot figcaption {
+      font-family: var(--font-display);
+      font-size: var(--text-display-sm);
+      font-style: italic;
+      color: var(--color-text-secondary);
+      text-align: center;
+      max-width: 220px;
+    }
+
+    .features {
+      padding: var(--space-lg) var(--space-md);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .feature-icon {
+      color: var(--color-gold);
+      font-size: 1.25rem;
+      margin-bottom: var(--space-xs);
+    }
+
+    .feature-title {
+      font-family: var(--font-display);
+      font-size: var(--text-display-sm);
+      color: var(--color-text);
+      margin-bottom: 0.25rem;
+    }
+
+    .feature-body {
+      font-size: var(--text-label);
+      color: var(--color-text-faint);
+      line-height: 1.5;
+    }
+
+    .quote-section {
+      text-align: center;
+      padding: var(--space-lg) var(--space-md);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .pull-quote {
+      font-family: var(--font-display);
+      font-size: var(--text-display-sm);
+      font-style: italic;
+      color: var(--color-text-secondary);
+      margin-bottom: var(--space-xs);
+      max-width: 540px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .quote-attr {
+      font-size: var(--text-label);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--color-text-faint);
+    }
+
+    footer {
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-wordmark {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      letter-spacing: 4px;
+      color: #343456;
+    }
+
+    .footer-links {
+      font-size: 0.6875rem;
+      color: var(--color-text-faint);
+      display: flex;
+      gap: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 1.75rem; }
+      .hero-ctas { flex-direction: column; }
+      nav { padding: 1rem; }
+      .nav-links a { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="index.html">
+      <svg width="12" height="18" viewBox="0 0 48 74" fill="none">
+        <line x1="24" y1="2" x2="24" y2="72" stroke="#c9a84c" stroke-width="4" stroke-linecap="round"/>
+        <line x1="2" y1="20" x2="46" y2="20" stroke="#c9a84c" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="24" cy="20" r="5.5" fill="#0d0d1a" stroke="#c9a84c" stroke-width="2.5"/>
+        <line x1="16" y1="2" x2="32" y2="2" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/>
+        <line x1="16" y1="72" x2="32" y2="72" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/>
+        <line x1="2" y1="13" x2="2" y2="27" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/>
+        <line x1="46" y1="13" x2="46" y2="27" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <span class="nav-wordmark">LAUDS</span>
+    </a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#faq">FAQ</a>
+      <a href="#download" class="btn-primary">Download</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Find the Traditional<br>Latin Mass near you.</h1>
+    <p class="subhead">FSSP · ICKSP · Diocesan · SSPX. Everywhere you travel.</p>
+    <div class="hero-ctas">
+      <a id="download" href="#" class="btn-primary">Download on the App Store</a>
+      <span class="btn-ghost">$1.99 one-time</span>
+    </div>
+  </section>
+
+  <section class="screenshot-section">
+    <div class="screenshot-gallery">
+      <figure class="shot">
+        <div class="iphone-mock">
+          <img src="screenshots/map.png" alt="Map showing nearby Traditional Latin Mass locations" loading="lazy" width="560" height="1216">
+        </div>
+        <figcaption>Every Latin Mass on one map</figcaption>
+      </figure>
+      <figure class="shot">
+        <div class="iphone-mock">
+          <img src="screenshots/community.png" alt="Filter Masses by community: FSSP, ICKSP, Diocesan, SSPX" loading="lazy" width="560" height="1216">
+        </div>
+        <figcaption>Know whose Mass it is</figcaption>
+      </figure>
+      <figure class="shot">
+        <div class="iphone-mock">
+          <img src="screenshots/search.png" alt="Search results for Traditional Latin Mass locations in Chicago" loading="lazy" width="560" height="1216">
+        </div>
+        <figcaption>Find Mass in any city</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="features" id="about">
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">✦</div>
+        <div class="feature-title">Travel Mode</div>
+        <p class="feature-body">Find TLM anywhere in the world, not just near home.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">✦</div>
+        <div class="feature-title">Community Context</div>
+        <p class="feature-body">FSSP, ICKSP, diocesan, and SSPX. Clearly distinguished.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">✦</div>
+        <div class="feature-title">Always Current</div>
+        <p class="feature-body">Community-verified schedules. Flag stale data in one tap.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="quote-section">
+    <p class="pull-quote">"Finally an app built for us, not just a filtered version of everything else."</p>
+    <p class="quote-attr">App Store review</p>
+  </section>
+
+  <footer>
+    <span class="footer-wordmark">LAUDS</span>
+    <div class="footer-links">
+      <a href="privacy.html">Privacy</a>
+      <a href="mailto:support@laudsapp.com">Contact</a>
+      <span>© 2026</span>
+    </div>
+  </footer>
+
+</body>
+</html>

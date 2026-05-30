@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy · Lauds</title>
+  <meta name="description" content="Lauds privacy policy. No accounts, no ads, no third-party tracking. Your favorites and reminders stay on your device.">
+  <meta name="robots" content="index, follow">
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-ui);
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    a { color: var(--color-gold); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    nav {
+      background: var(--color-bg-deep);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .nav-logo { display: flex; align-items: center; gap: 10px; }
+
+    .nav-wordmark {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 5px;
+      color: var(--color-gold);
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--color-text); text-decoration: none; }
+
+    .policy {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: var(--space-lg) var(--space-md) var(--space-xl);
+    }
+
+    .policy h1 {
+      font-family: var(--font-display);
+      font-size: var(--text-display-lg);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+
+    .policy .updated {
+      font-size: var(--text-label);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--color-text-faint);
+      margin-bottom: var(--space-md);
+    }
+
+    .policy .lede {
+      font-size: var(--text-body-lg);
+      color: var(--color-text-secondary);
+      margin-bottom: var(--space-md);
+    }
+
+    .policy h2 {
+      font-family: var(--font-display);
+      font-size: var(--text-display-sm);
+      font-weight: 600;
+      color: var(--color-text);
+      margin-top: var(--space-md);
+      margin-bottom: 0.5rem;
+      padding-top: var(--space-sm);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .policy p { color: var(--color-text-secondary); margin-bottom: 0.75rem; }
+
+    .policy ul { list-style: none; margin: 0 0 0.75rem; padding: 0; }
+
+    .policy li {
+      position: relative;
+      padding-left: 1.5rem;
+      color: var(--color-text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .policy li::before {
+      content: "\2726";
+      position: absolute;
+      left: 0;
+      color: var(--color-gold);
+      font-size: 0.875rem;
+    }
+
+    .summary {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-sm) var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+    .summary h2 { border-top: none; margin-top: 0; padding-top: 0; }
+
+    footer {
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .footer-wordmark {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      letter-spacing: 4px;
+      color: #343456;
+    }
+
+    .footer-links {
+      font-size: 0.6875rem;
+      color: var(--color-text-faint);
+      display: flex;
+      gap: 1rem;
+    }
+    .footer-links a { color: var(--color-text-faint); }
+    .footer-links a:hover { color: var(--color-gold); text-decoration: none; }
+
+    @media (max-width: 600px) {
+      nav { padding: 1rem; }
+      .policy { padding: var(--space-md) var(--space-sm) var(--space-lg); }
+      .policy h1 { font-size: 1.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="index.html">
+      <svg width="12" height="18" viewBox="0 0 48 74" fill="none">
+        <line x1="24" y1="2" x2="24" y2="72" stroke="#c9a84c" stroke-width="4" stroke-linecap="round"/>
+        <line x1="2" y1="20" x2="46" y2="20" stroke="#c9a84c" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="24" cy="20" r="5.5" fill="#0d0d1a" stroke="#c9a84c" stroke-width="2.5"/>
+        <line x1="16" y1="2" x2="32" y2="2" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/>
+        <line x1="16" y1="72" x2="32" y2="72" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/>
+        <line x1="2" y1="13" x2="2" y2="27" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/>
+        <line x1="46" y1="13" x2="46" y2="27" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <span class="nav-wordmark">LAUDS</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Back to home</a>
+    </div>
+  </nav>
+
+  <main class="policy">
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated May 30, 2026</p>
+
+    <p class="lede">Lauds is built to help you find the Traditional Latin Mass, and it is designed to collect as little as possible. There are no accounts, no advertising, and no third-party analytics or tracking.</p>
+
+    <div class="summary">
+      <h2>The short version</h2>
+      <ul>
+        <li>No account, no sign in, no ads.</li>
+        <li>No third-party analytics or tracking tools.</li>
+        <li>Your favorites and reminders stay on your device.</li>
+        <li>When you look for Mass near you, your approximate location is sent to our database only to return nearby results. It is never tied to your identity.</li>
+      </ul>
+    </div>
+
+    <h2>Location</h2>
+    <p>When you open the Nearby map, Lauds asks for your location while you are using the app. Your approximate coordinates (accuracy of about 100 meters) are sent to our hosted database to find Mass locations within a search radius and return them to you. We use this only to answer that request. We do not build a profile, and the coordinates are not linked to your name or any persistent identifier. You can decline location access and search by city instead.</p>
+
+    <h2>Searching by city</h2>
+    <p>When you search for a place, that query is used to look up Mass locations in that area from our database. As with the Nearby map, it is used only to return results.</p>
+
+    <h2>Favorites</h2>
+    <p>Locations you save as favorites are stored locally on your device. They are not uploaded to our servers and are not synced to any account.</p>
+
+    <h2>Reminders and notifications</h2>
+    <p>If you turn on Mass reminders or Holy Day alerts, those notifications are scheduled locally on your device. No reminder data is sent to us.</p>
+
+    <h2>Reporting and verifying locations</h2>
+    <p>Lauds is kept accurate by its community. Two optional actions send data to us:</p>
+    <ul>
+      <li>If you report a correction or submit a new location, the details you type are sent to our database so we can review and update the listing.</li>
+      <li>If you confirm that a location is accurate, a per-device identifier (Apple's identifier for vendor) is sent so we can count verifications and avoid duplicates. This identifier is not your name or email, and it resets if you delete the app.</li>
+    </ul>
+
+    <h2>What we do not collect</h2>
+    <p>We do not collect your name, email, contacts, photos, browsing history, or advertising identifiers. We do not use cookies or tracking pixels. We do not sell or share your data with advertisers, because there are none.</p>
+
+    <h2>Service providers</h2>
+    <ul>
+      <li>Our location database is hosted on Supabase. The requests described above are processed there on our behalf.</li>
+      <li>Lauds is distributed through the Apple App Store. Apple may collect its own standard metrics about downloads and crashes, governed by Apple's privacy policy. See your device settings for what Apple collects.</li>
+    </ul>
+
+    <h2>Children</h2>
+    <p>Lauds is rated 4+ and is suitable for all ages. It does not knowingly collect personal information from anyone, including children.</p>
+
+    <h2>Changes to this policy</h2>
+    <p>If we change how Lauds handles data, we will update this page and the date shown above.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about privacy? Email <a href="mailto:support@laudsapp.com">support@laudsapp.com</a>.</p>
+  </main>
+
+  <footer>
+    <span class="footer-wordmark">LAUDS</span>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="mailto:support@laudsapp.com">Contact</a>
+      <span>© 2026</span>
+    </div>
+  </footer>
+
+</body>
+</html>
