@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DCC CV Vault — Keep your decoder settings</title>
+  <meta name="description" content="A notebook for your DCC decoder settings. Record CVs and function mapping, snapshot before you tune, compare what changed, and restore when it goes wrong. iPhone, iPad, and Mac.">
+  <meta property="og:title" content="DCC CV Vault">
+  <meta property="og:description" content="Record every locomotive's CV values, function mapping, and notes. Snapshot before you tune. Restore when it goes wrong.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--color-bg); color: var(--color-text); font-family: var(--font-ui); font-weight: 300; line-height: 1.65; }
+    a { color: var(--color-accent); }
+    nav { background: var(--color-bg-deep); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--color-border); }
+    .wordmark { font-weight: 700; letter-spacing: .01em; color: var(--color-text); text-decoration: none; }
+    .wordmark span { color: var(--color-brass); }
+    nav a.back { color: var(--color-text-muted); text-decoration: none; font-size: var(--text-body-md); }
+    nav a.back:hover { color: var(--color-text); }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 0 var(--space-md); }
+    header.hero { padding: var(--space-xl) 0 var(--space-lg); text-align: center; }
+    .plate { display: inline-block; background: var(--color-brass); color: #182c21; font-weight: 700; letter-spacing: .12em; font-size: var(--text-label); padding: .4rem .8rem; border-radius: var(--radius-sm); text-transform: uppercase; margin-bottom: var(--space-sm); }
+    h1 { font-size: var(--text-display-lg); font-weight: 600; line-height: 1.15; margin-bottom: var(--space-sm); }
+    .lede { font-size: var(--text-body-lg); color: var(--color-text-secondary); max-width: var(--measure); margin: 0 auto var(--space-md); }
+    .cta { display: inline-block; background: var(--color-accent); color: #0e1712; font-weight: 600; padding: .85rem 1.6rem; border-radius: var(--radius-md); text-decoration: none; }
+    .cta.secondary { background: transparent; color: var(--color-accent); border: 1px solid var(--color-accent); margin-left: .5rem; }
+    .note { font-size: var(--text-body-md); color: var(--color-text-muted); margin-top: var(--space-sm); }
+    section { padding: var(--space-lg) 0; border-top: 1px solid var(--color-border); }
+    h2 { font-size: var(--text-display-md); font-weight: 600; margin-bottom: var(--space-sm); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-md); margin-top: var(--space-md); }
+    .card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-md); }
+    .card h3 { font-size: var(--text-display-sm); font-weight: 600; margin-bottom: var(--space-xs); color: var(--color-brass); }
+    .card p { font-size: var(--text-body-md); color: var(--color-text-secondary); }
+    .truth { background: var(--color-surface); border-left: 3px solid var(--color-brass); border-radius: var(--radius-md); padding: var(--space-md); margin-top: var(--space-md); }
+    .truth p { color: var(--color-text-secondary); max-width: var(--measure); }
+    ul.plain { list-style: none; margin-top: var(--space-sm); }
+    ul.plain li { padding: .35rem 0 .35rem 1.5rem; position: relative; color: var(--color-text-secondary); font-size: var(--text-body-md); }
+    ul.plain li::before { content: "—"; position: absolute; left: 0; color: var(--color-brass); }
+    footer { border-top: 1px solid var(--color-border); padding: var(--space-md) 0 var(--space-lg); color: var(--color-text-muted); font-size: var(--text-body-md); }
+    footer a { color: var(--color-text-secondary); }
+    @media (max-width: 600px) { h1 { font-size: 2rem; } .cta.secondary { margin: .75rem 0 0; display: block; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="wordmark" href="/">Addicting<span>Apps</span></a>
+    <a class="back" href="/">All apps</a>
+  </nav>
+
+  <div class="wrap">
+    <header class="hero">
+      <div class="plate">DCC CV Vault</div>
+      <h1>Your decoder settings, kept.</h1>
+      <p class="lede">
+        Every DCC modeller has done it: spent an evening getting a locomotive
+        running exactly right, then months later changed one CV and lost the
+        setup you can no longer remember.
+      </p>
+      <a class="cta" href="#features">What it does</a>
+      <a class="cta secondary" href="privacy.html">Privacy</a>
+      <p class="note">iPhone, iPad, and Mac. One locomotive free — a single lifetime purchase unlocks an unlimited roster.</p>
+    </header>
+
+    <section id="features">
+      <h2>A notebook for your decoders</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Keep a real record</h3>
+          <p>CV numbers, values, and your own notes for every locomotive. Indexed CVs are supported.</p>
+        </div>
+        <div class="card">
+          <h3>Snapshot before you tune</h3>
+          <p>Save the current state under a name you will recognise, compare it against what you have now, and put it back if the new values are worse.</p>
+        </div>
+        <div class="card">
+          <h3>CV 29 without the arithmetic</h3>
+          <p>Set direction, speed steps, and address length with switches. The app works out the value and leaves the reserved bits alone.</p>
+        </div>
+        <div class="card">
+          <h3>Function mapping you'll still understand next year</h3>
+          <p>Record what F0 through F28 actually do on each locomotive, with notes.</p>
+        </div>
+        <div class="card">
+          <h3>Import what you already have</h3>
+          <p>Bring in locomotives from a JMRI roster. Every import is previewed before anything is added, and you choose how conflicts are resolved.</p>
+        </div>
+        <div class="card">
+          <h3>Your data stays yours</h3>
+          <p>Export one locomotive or your whole roster as plain JSON you keep. No account, no analytics, no advertising, no server.</p>
+        </div>
+      </div>
+
+      <div class="truth">
+        <p>
+          <strong>An unknown CV is not a CV set to zero.</strong> A value you
+          have not read yet stays marked unknown and is shown differently,
+          because guessing it is worse than admitting you do not know it.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>What it does not do</h2>
+      <ul class="plain">
+        <li>It does not read from or program decoders. It records what you set them to.</li>
+        <li>It does not connect to a command station or your layout.</li>
+        <li>It has no account, no analytics, no advertising, and no server.</li>
+      </ul>
+    </section>
+
+    <footer>
+      <div class="wrap" style="padding:0">
+        <p>DCC CV Vault — <a href="privacy.html">Privacy Policy</a> — <a href="/contact.html">Support</a></p>
+        <p style="margin-top:.5rem">© AddictingApps</p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

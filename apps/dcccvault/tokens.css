@@ -1,0 +1,38 @@
+/* apps/dcccvault/tokens.css
+   Mirrors DCCCVault/Theme/VaultPalette.swift. Every value here is the same
+   railroad heritage palette the app ships, verified to clear 4.5:1 contrast. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --color-bg:             #14201a;  /* vaultSurface, dark */
+  --color-bg-deep:        #0e1712;
+  --color-surface:        #1e2c24;  /* elevated */
+  --color-border:         #2a3a31;
+  --color-accent:         #63c08d;  /* vaultAccent, dark */
+  --color-accent-deep:    #1f5c3d;  /* vaultAccent, light */
+  --color-brass:          #e0b65c;  /* vaultBrass, dark */
+  --color-text:           #f5f0e6;  /* bodyText on dark */
+  --color-text-secondary: #cfc9bd;
+  --color-text-muted:     #9ca3af;  /* vaultUnknownCV, dark */
+
+  --font-ui: 'Inter', system-ui, -apple-system, sans-serif;
+
+  --text-display-lg: 2.75rem;
+  --text-display-md: 1.75rem;
+  --text-display-sm: 1.1875rem;
+  --text-body-lg:    1.0625rem;
+  --text-body-md:    0.9375rem;
+  --text-label:      0.75rem;
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 6rem;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 18px;
+
+  --measure: 62ch;
+}
