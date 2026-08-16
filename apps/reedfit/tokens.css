@@ -1,0 +1,52 @@
+/* ReedFit — the app's own palette: parchment page, pine ink, copper hardware. */
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  /* Paper */
+  --color-bg:             #f5f2ea;
+  --color-bg-deep:        #0f3d32;
+  --color-bg-deeper:      #082620;
+  --color-surface:        #fffdf9;
+  --color-surface-sunken: #f0ece2;
+  --color-border:         #e2dccd;
+
+  /* Ink and hardware */
+  --color-pine:           #0f3d32;
+  --color-pine-light:     #1c5a4a;
+  --color-copper:         #93400d;
+  --color-copper-bright:  #e9a06a;
+  --color-success:        #166534;
+
+  /* Text */
+  --color-text:           #1c1f1e;
+  --color-text-secondary: #4a524e;
+  --color-text-muted:     #767b78;
+  --color-text-invert:    #f5f2ea;
+
+  /* Typography */
+  --font-display: 'Lora', Georgia, 'Times New Roman', serif;
+  --font-ui:      'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Type scale */
+  --text-hero:       clamp(2.25rem, 5.5vw, 3.75rem);
+  --text-display-lg: clamp(1.75rem, 3.5vw, 2.5rem);
+  --text-display-md: 1.375rem;
+  --text-body-lg:    1.125rem;
+  --text-body-md:    1rem;
+  --text-label:      0.75rem;
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1.25rem;
+  --space-lg: 2rem;
+  --space-xl: 3.5rem;
+  --space-2xl: 5.5rem;
+
+  /* Shape */
+  --radius:    14px;
+  --radius-lg: 22px;
+  --shadow:    0 1px 2px rgba(15, 61, 50, 0.05), 0 8px 24px rgba(15, 61, 50, 0.07);
+  --shadow-lg: 0 2px 4px rgba(15, 61, 50, 0.06), 0 20px 50px rgba(15, 61, 50, 0.12);
+  --maxw:      1080px;
+}

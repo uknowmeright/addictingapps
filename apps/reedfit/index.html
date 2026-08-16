@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReedFit: Bagpipe Reed Log — Find your best reed setup</title>
+  <meta name="description" content="A bagpipe reed log for pipers who care which reed, in which chanter, with which settings, actually sounded right. Log a test in four taps. No account, no analytics, no server.">
+  <meta property="og:title" content="ReedFit: Bagpipe Reed Log">
+  <meta property="og:description" content="Remember what worked. Reproduce your best sound.">
+  <meta property="og:image" content="screenshots/01-today.png">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-ui);
+      font-weight: 400;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ---------------------------------------------------------------- nav */
+    nav {
+      background: linear-gradient(135deg, var(--color-bg-deep), var(--color-bg-deeper));
+      padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 20;
+    }
+    .nav-wordmark {
+      font-family: var(--font-display);
+      font-size: 1rem; font-weight: 600; letter-spacing: 4px;
+      color: var(--color-copper-bright);
+    }
+    .nav-links { display: flex; gap: 1.5rem; }
+    .nav-links a {
+      font-size: 0.875rem; color: rgba(255,255,255,0.78); transition: color .2s;
+    }
+    .nav-links a:hover { color: #fff; }
+
+    /* --------------------------------------------------------------- hero */
+    .hero {
+      max-width: var(--maxw); margin: 0 auto;
+      padding: var(--space-2xl) 1.5rem var(--space-xl);
+      display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl);
+      align-items: center;
+    }
+    .eyebrow {
+      font-size: var(--text-label); letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--color-copper); font-weight: 600; margin-bottom: var(--space-sm);
+    }
+    .eyebrow::after {
+      content: ''; display: block; width: 26px; height: 2px;
+      background: var(--color-copper); margin-top: 6px;
+    }
+    h1 {
+      font-family: var(--font-display); font-size: var(--text-hero);
+      font-weight: 600; line-height: 1.1; color: var(--color-pine);
+      margin-bottom: var(--space-md);
+    }
+    .lede { font-size: var(--text-body-lg); color: var(--color-text-secondary); margin-bottom: var(--space-lg); }
+    .hero-shot img {
+      border-radius: 30px; box-shadow: var(--shadow-lg);
+      border: 1px solid var(--color-border); margin: 0 auto; max-width: 320px;
+    }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: 999px; padding: 0.6rem 1.1rem;
+      font-size: 0.9rem; color: var(--color-text-secondary);
+    }
+    .badge strong { color: var(--color-pine); font-weight: 600; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-copper); }
+
+    /* ----------------------------------------------------------- sections */
+    section { padding: var(--space-2xl) 1.5rem; }
+    .wrap { max-width: var(--maxw); margin: 0 auto; }
+    .section-head { max-width: 640px; margin-bottom: var(--space-xl); }
+    h2 {
+      font-family: var(--font-display); font-size: var(--text-display-lg);
+      font-weight: 600; color: var(--color-pine); margin-bottom: var(--space-sm);
+      line-height: 1.2;
+    }
+    .section-head p { color: var(--color-text-secondary); font-size: var(--text-body-lg); }
+
+    .band { background: var(--color-surface); border-block: 1px solid var(--color-border); }
+    .band-dark {
+      background: linear-gradient(135deg, var(--color-bg-deep), var(--color-bg-deeper));
+      color: var(--color-text-invert);
+    }
+    .band-dark h2 { color: var(--color-copper-bright); }
+    .band-dark p { color: rgba(245,242,234,0.82); }
+
+    /* -------------------------------------------------------------- steps */
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+    .step-num {
+      font-family: var(--font-display); font-size: 1.1rem; font-weight: 600;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--color-pine); color: var(--color-text-invert);
+      display: grid; place-items: center; margin-bottom: var(--space-sm);
+    }
+    .step h3 { font-family: var(--font-display); font-size: var(--text-display-md); color: var(--color-pine); margin-bottom: 6px; }
+    .step p { color: var(--color-text-secondary); font-size: var(--text-body-md); }
+
+    /* ------------------------------------------------------------ gallery */
+    .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+    .shot img {
+      border-radius: 22px; border: 1px solid var(--color-border);
+      box-shadow: var(--shadow); margin-bottom: var(--space-sm);
+    }
+    .shot h3 { font-family: var(--font-display); font-size: 1.15rem; color: var(--color-pine); margin-bottom: 4px; }
+    .shot p { font-size: 0.9375rem; color: var(--color-text-secondary); }
+
+    /* ----------------------------------------------------------- features */
+    .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
+    .feature {
+      background: var(--color-bg); border: 1px solid var(--color-border);
+      border-radius: var(--radius); padding: var(--space-md) var(--space-lg);
+    }
+    .band .feature { background: var(--color-surface-sunken); }
+    .feature h3 { font-family: var(--font-display); font-size: 1.15rem; color: var(--color-pine); margin-bottom: 4px; }
+    .feature p { font-size: 0.9375rem; color: var(--color-text-secondary); }
+
+    /* ------------------------------------------------------------ honesty */
+    .honest { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); margin-top: var(--space-lg); }
+    .honest div {
+      border-left: 2px solid var(--color-copper-bright);
+      padding-left: var(--space-md);
+    }
+    .honest h3 { font-size: 1rem; font-weight: 600; color: var(--color-copper-bright); margin-bottom: 4px; }
+
+    /* ------------------------------------------------------------ pricing */
+    .price-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); max-width: 760px; }
+    .price {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg); padding: var(--space-lg);
+    }
+    .price.paid { border-color: var(--color-pine); box-shadow: var(--shadow); }
+    .price .tier { font-size: var(--text-label); letter-spacing: 2px; text-transform: uppercase; color: var(--color-copper); font-weight: 600; }
+    .price .amount { font-family: var(--font-display); font-size: 2.25rem; color: var(--color-pine); margin: 6px 0 2px; }
+    .price .note { font-size: 0.875rem; color: var(--color-text-muted); margin-bottom: var(--space-md); }
+    .price ul { list-style: none; }
+    .price li { font-size: 0.9375rem; color: var(--color-text-secondary); padding-left: 1.4rem; position: relative; margin-bottom: 6px; }
+    .price li::before { content: '·'; position: absolute; left: 0.5rem; color: var(--color-copper); font-weight: 700; }
+
+    /* ------------------------------------------------------------- footer */
+    footer {
+      text-align: center; color: var(--color-text-muted); font-size: 0.85rem;
+      padding: var(--space-xl) 1.5rem var(--space-2xl);
+      border-top: 1px solid var(--color-border);
+    }
+    footer a { color: var(--color-copper); }
+    footer a:hover { text-decoration: underline; }
+    .footer-links { display: flex; gap: 1.25rem; justify-content: center; margin-bottom: var(--space-sm); }
+
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; padding-top: var(--space-xl); }
+      .hero-shot { order: -1; }
+      .steps, .gallery, .features, .price-grid, .honest { grid-template-columns: 1fr; }
+      section { padding: var(--space-xl) 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <span class="nav-wordmark">REEDFIT</span>
+    <span class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="support.html">Support</a>
+      <a href="privacy.html">Privacy</a>
+    </span>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <p class="eyebrow">Bagpipe Reed Log</p>
+      <h1>Remember what worked. Reproduce your best sound.</h1>
+      <p class="lede">
+        You found the reed that sang last Saturday. Same chanter, same seating, same bridle —
+        and this week you cannot get it back, because nobody wrote any of it down.
+      </p>
+      <p class="badge"><span class="dot"></span> <strong>Coming soon</strong> to the App Store · iPhone, iOS 17+</p>
+    </div>
+    <div class="hero-shot">
+      <img src="screenshots/01-today.png" alt="ReedFit Today screen showing the current setup scoring 3.8 out of 5, a best setup at 4.6, and a Ready backup." width="450" height="978">
+    </div>
+  </header>
+
+  <section id="how" class="band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Four taps and a save</h2>
+        <p>ReedFit is built for the two minutes after you stop playing, when you still remember how it felt.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <h3>Pair a setup</h3>
+          <p>One reed, one chanter, and your own notes on seating depth, bridle, and any modification.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <h3>Rate it</h3>
+          <p>Tone, stability, comfort, response. Humidity, temperature, altitude, and warm-up are optional and never block a save.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <h3>Compare and choose</h3>
+          <p>See every tested setup for that chanter ranked, then mark the one you trust as a Ready backup.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Built around your own evidence</h2>
+        <p>Every number in ReedFit traces back to tests you recorded, and says how many there were.</p>
+      </div>
+      <div class="gallery">
+        <div class="shot">
+          <img src="screenshots/03-compare.png" alt="Compare screen ranking three reeds in the same chanter with dimension averages." width="450" height="978" loading="lazy">
+          <h3>Settle it with evidence</h3>
+          <p>Reeds ranked within one chanter, because a reed behaves differently in each.</p>
+        </div>
+        <div class="shot">
+          <img src="screenshots/02-quick-test.png" alt="Quick Test screen with tone, stability, comfort, and response all rated." width="450" height="978" loading="lazy">
+          <h3>Under thirty seconds</h3>
+          <p>Four ratings on one screen. Save is disabled until all four are set — nothing half-recorded.</p>
+        </div>
+        <div class="shot">
+          <img src="screenshots/04-gear.png" alt="Gear screen listing five reeds with their scores, a Ready chip, and a Retired chip." width="450" height="978" loading="lazy">
+          <h3>Your whole reed box</h3>
+          <p>Which one is good, which is your backup, which is retired — at a glance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band-dark">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What ReedFit will not do</h2>
+        <p>A reed log is only worth keeping if you can trust what it tells you. So we are precise about the limits.</p>
+      </div>
+      <div class="honest">
+        <div>
+          <h3>It does not listen to your pipes</h3>
+          <p>No microphone, no acoustic analysis, no diagnosis. ReedFit records what you enter and reports arithmetic over it.</p>
+        </div>
+        <div>
+          <h3>It does not guess at patterns</h3>
+          <p>No trend or condition language appears until a setup has at least three tests, and every claim states its sample size.</p>
+        </div>
+        <div>
+          <h3>It does not rewrite history</h3>
+          <p>Once a setup has been tested it is locked. Editing it records a new snapshot, so old tests always belong to the setup they were recorded on.</p>
+        </div>
+        <div>
+          <h3>It does not pick for you</h3>
+          <p>Ready backups are your call. ReedFit only asks that the reed is active and the setup has a test of its own.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Yours, on your phone</h2>
+        <p>No account. No analytics. No ads. No server of ours. Nothing to sign into and nothing to leak.</p>
+      </div>
+      <div class="features">
+        <div class="feature">
+          <h3>Works anywhere</h3>
+          <p>Competition field, band hall, aeroplane. ReedFit never needs a network connection.</p>
+        </div>
+        <div class="feature">
+          <h3>Full backup and restore</h3>
+          <p>One file with every reed, chanter, setup, test, and photo. Restoring shows you the counts and asks before replacing anything.</p>
+        </div>
+        <div class="feature">
+          <h3>CSV export</h3>
+          <p>One row per test with the reed, chanter, and setup fields repeated, so your spreadsheet needs no joins.</p>
+        </div>
+        <div class="feature">
+          <h3>Accessible by design</h3>
+          <p>Full Dynamic Type, VoiceOver labels on every score, and no state signalled by colour alone.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>One purchase. No subscription.</h2>
+        <p>Free covers a real comparison before you decide anything.</p>
+      </div>
+      <div class="price-grid">
+        <div class="price">
+          <p class="tier">Free</p>
+          <p class="amount">$0</p>
+          <p class="note">Everything you need to run a genuine test</p>
+          <ul>
+            <li>1 chanter, 3 reeds, 10 saved tests</li>
+            <li>Full comparison and ranking</li>
+            <li>Ready backups</li>
+            <li>Nothing you record is ever removed</li>
+          </ul>
+        </div>
+        <div class="price paid">
+          <p class="tier">ReedFit Unlimited</p>
+          <p class="amount">$24.99</p>
+          <p class="note">One-time purchase, not a subscription</p>
+          <ul>
+            <li>Unlimited chanters, reeds, setups, and tests</li>
+            <li>Full backup and restore</li>
+            <li>CSV export of every test</li>
+            <li>All future 1.x updates</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="support.html">Support</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="mailto:support@addictingapps.org">Contact</a>
+    </div>
+    <p>Made for the Great Highland Bagpipe. Reed names shown in screenshots are fictional.</p>
+    <p>© 2026 Addicting Apps · <a href="https://www.addictingapps.org">addictingapps.org</a></p>
+  </footer>
+</body>
+</html>
