@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WellCheck — Understand your well water test results</title>
+  <title>Well Water Log — Understand your well water test results</title>
   <meta name="description" content="A private well owner's testing companion. Log your lab results, see what every number means against EPA drinking water limits in plain English, watch trends, and never miss your annual test. Offline, no account.">
-  <meta property="og:title" content="WellCheck">
+  <meta property="og:title" content="Well Water Log">
   <meta property="og:description" content="Your lab report, in plain English. For the 13 million households nobody tests the water for.">
   <meta property="og:image" content="screenshots/02-dashboard.png">
   <meta property="og:type" content="website">
@@ -21,7 +21,7 @@
       -webkit-font-smoothing: antialiased;
     }
     a { color: inherit; text-decoration: none; }
-    img { max-width: 100%; display: block; }
+    img { max-width: 100%; height: auto; display: block; }
 
     /* ---------------------------------------------------------------- nav */
     nav {
@@ -160,6 +160,20 @@
     .price li { font-size: 0.9375rem; color: var(--color-text-secondary); padding-left: 1.4rem; position: relative; margin-bottom: 6px; }
     .price li::before { content: '·'; position: absolute; left: 0.5rem; color: var(--color-teal); font-weight: 700; }
 
+
+    /* ---------------------------------------------------------- store cta */
+    .cta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.85rem; }
+    .cta {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      background: var(--color-teal); color: #ffffff;
+      border-radius: 999px; padding: 0.8rem 1.6rem;
+      font-weight: 600; font-size: 0.95rem; line-height: 1.2;
+      transition: transform .15s ease, filter .15s ease;
+    }
+    .cta:hover { transform: translateY(-1px); filter: brightness(1.06); }
+    .cta:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 3px; }
+    .cta svg { width: 17px; height: 17px; fill: currentColor; flex: none; }
+
     /* ------------------------------------------------------------- footer */
     footer {
       text-align: center; color: var(--color-text-muted); font-size: 0.85rem;
@@ -182,7 +196,7 @@
 </head>
 <body>
   <nav>
-    <span class="nav-wordmark">WELLCHECK</span>
+    <span class="nav-wordmark">WELL WATER LOG</span>
     <span class="nav-links">
       <a href="#how">How it works</a>
       <a href="#limits">Limits</a>
@@ -194,18 +208,21 @@
   <header class="hero">
     <div class="hero-inner">
       <div>
-        <p class="eyebrow">Private Well Water Log</p>
+        <p class="eyebrow">Private well testing companion</p>
         <h1>Your lab report, in plain English.</h1>
         <p class="lede">
           Thirteen million American households drink from a private well, and no agency tests that water
-          for them. The lab sends back a page of numbers with no verdict attached. WellCheck reads that
+          for them. The lab sends back a page of numbers with no verdict attached. Well Water Log reads that
           page with you: every value checked against EPA drinking water limits, explained in a sentence
           you can act on, and kept where you can find it next year.
         </p>
-        <p class="badge"><span class="dot"></span> <strong>Coming soon</strong> to the App Store · iPhone, iOS 17+</p>
+        <p class="cta-row">
+          <a class="cta" href="https://apps.apple.com/us/app/well-water-log/id6789409017"><svg viewBox="0 0 384 512" aria-hidden="true" focusable="false"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>Get it on the App Store</a>
+          <span class="badge"><span class="dot"></span> Free · iPhone · on your Home Screen as <strong>WellCheck</strong></span>
+        </p>
       </div>
       <div class="hero-shot">
-        <img src="screenshots/02-dashboard.png" alt="WellCheck dashboard showing an All Clear well status for a June 2026 test, above a history of four earlier tests." width="414" height="900">
+        <img src="screenshots/02-dashboard.png" alt="Well Water Log dashboard showing an All Clear well status for a June 2026 test, above a history of four earlier tests." width="414" height="900">
       </div>
     </div>
   </header>
@@ -306,13 +323,13 @@
   <section id="limits" class="band-dark">
     <div class="wrap">
       <div class="section-head">
-        <h2>What WellCheck is not</h2>
+        <h2>What Well Water Log is not</h2>
         <p>Water quality is a health question, and an app that overstates itself is worse than no app.</p>
       </div>
       <div class="honest">
         <div>
           <h3>It is not a lab</h3>
-          <p>WellCheck cannot measure anything. It records the numbers a certified laboratory gave you and compares them to published limits.</p>
+          <p>Well Water Log cannot measure anything. It records the numbers a certified laboratory gave you and compares them to published limits.</p>
         </div>
         <div>
           <h3>It is not medical advice</h3>
@@ -349,7 +366,7 @@
           </ul>
         </div>
         <div class="price paid">
-          <p class="tier">WellCheck Pro</p>
+          <p class="tier">Pro unlock</p>
           <p class="amount">$8.99</p>
           <p class="note">One-time purchase, not a subscription</p>
           <ul>
@@ -370,7 +387,7 @@
       <a href="/">Addicting Apps</a>
     </div>
     <p class="disclaimer">
-      WellCheck is an educational reference tool. It does not test water, certify results, or provide
+      Well Water Log is an educational reference tool. It does not test water, certify results, or provide
       medical advice. Screenshots show sample data. Limits shown in the app come from EPA National
       Primary and Secondary Drinking Water Regulations.
     </p>

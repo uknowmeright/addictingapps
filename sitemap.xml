@@ -1,41 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-<url>
-  <loc>http://addictingapps.org/</loc>
-  <lastmod>2014-10-16T00:02:38+00:00</lastmod>
-</url>
-<url>
-  <loc>http://addictingapps.org/index.html</loc>
-  <lastmod>2014-10-16T00:02:38+00:00</lastmod>
-</url>
-<url>
-  <loc>http://addictingapps.org/about.html</loc>
-  <lastmod>2014-10-15T23:57:44+00:00</lastmod>
-</url>
-<url>
-  <loc>http://addictingapps.org/resources.html</loc>
-  <lastmod>2014-10-15T05:41:21+00:00</lastmod>
-</url>
-<url>
-  <loc>http://addictingapps.org/contact.html</loc>
-  <lastmod>2014-10-15T05:41:19+00:00</lastmod>
-</url>
-<url>
-  <loc>http://addictingapps.org/games/chikuns/</loc>
-  <lastmod>2014-08-07T23:36:37+00:00</lastmod>
-</url>
-<url>
-  <loc>http://addictingapps.org/games/balloon/</loc>
-  <lastmod>2014-08-08T02:05:22+00:00</lastmod>
-</url>
-<url>
-  <loc>http://addictingapps.org/games/winkybird/</loc>
-  <lastmod>2025-04-07T02:05:22+00:00</lastmod>
-</url>
+  <!-- Site -->
+  <url><loc>https://www.addictingapps.org/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://www.addictingapps.org/about.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://www.addictingapps.org/contact.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://www.addictingapps.org/resources.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+
+  <!-- Apps on the App Store -->
+  <url><loc>https://www.addictingapps.org/apps/wellcheck/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.addictingapps.org/apps/wellcheck/privacy.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+
+  <url><loc>https://www.addictingapps.org/apps/minermonitor/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.addictingapps.org/apps/minermonitor/privacy.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+
+  <url><loc>https://www.addictingapps.org/apps/escaperoomreset/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.addictingapps.org/apps/escaperoomreset/support.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://www.addictingapps.org/apps/escaperoomreset/privacy.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+
+  <url><loc>https://www.addictingapps.org/apps/epefield/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.addictingapps.org/apps/epefield/privacy.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+
+  <url><loc>https://www.addictingapps.org/apps/lauds/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.addictingapps.org/apps/lauds/privacy.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+
+  <url><loc>https://www.addictingapps.org/apps/dcccvault/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.addictingapps.org/apps/dcccvault/privacy.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+
+  <url><loc>https://www.addictingapps.org/apps/satstack/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.addictingapps.org/apps/stopraging/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.addictingapps.org/apps/winkybat/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.addictingapps.org/apps/memegpt/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+
+  <!-- Not yet released -->
+  <url><loc>https://www.addictingapps.org/apps/reedfit/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.addictingapps.org/apps/reedfit/support.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://www.addictingapps.org/apps/reedfit/privacy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://www.addictingapps.org/apps/eparchy/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Policy pages for apps without a marketing page -->
+  <url><loc>https://www.addictingapps.org/apps/hm183/privacy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://www.addictingapps.org/games/stopraging/PrivacyPolicy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://www.addictingapps.org/games/winkybat/PrivacyPolicy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://www.addictingapps.org/games/WheredItGo/PrivacyPolicy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+
+  <!-- Browser games -->
+  <url><loc>https://www.addictingapps.org/games/winkybat/</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.addictingapps.org/games/WheredItGo/</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.addictingapps.org/games/chikuns/</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://www.addictingapps.org/games/balloon/</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://www.addictingapps.org/games/nutrition/</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://www.addictingapps.org/games/doyouevensearch/</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+
 </urlset>

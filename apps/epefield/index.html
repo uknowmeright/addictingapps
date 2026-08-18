@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EPE Field — Dental X-ray equipment performance evaluations</title>
+  <title>Dental X-Ray EPE Workflow — Equipment performance evaluations in the field</title>
   <meta name="description" content="A field workspace for dental X-ray equipment performance evaluations: facility and unit inventory, jurisdiction-aware due dates, calibration-aware instrument tracking, guided observations, and locked, shareable PDF reports. iPhone and iPad, on-device.">
-  <meta property="og:title" content="EPE Field">
+  <meta property="og:title" content="Dental X-Ray EPE Workflow">
   <meta property="og:description" content="Know what is due before you arrive. Leave with a locked, signed report.">
   <meta property="og:image" content="screenshots/01.png">
   <meta property="og:type" content="website">
@@ -21,7 +21,7 @@
       -webkit-font-smoothing: antialiased;
     }
     a { color: inherit; text-decoration: none; }
-    img { max-width: 100%; display: block; }
+    img { max-width: 100%; height: auto; display: block; }
 
     /* ---------------------------------------------------------------- nav */
     nav {
@@ -32,7 +32,7 @@
     }
     .nav-wordmark {
       font-family: var(--font-display); font-size: 1rem; font-weight: 700;
-      letter-spacing: 3px; color: var(--color-teal-bright);
+      letter-spacing: 1.5px; color: var(--color-teal-bright);
     }
     .nav-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
     .nav-links a { font-size: 0.875rem; color: rgba(238,246,247,0.75); transition: color .2s; }
@@ -153,6 +153,20 @@
     .regbox p { color: rgba(238,246,247,0.82); max-width: 68ch; }
     .regbox p + p { margin-top: var(--space-sm); }
 
+
+    /* ---------------------------------------------------------- store cta */
+    .cta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.85rem; }
+    .cta {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      background: var(--color-teal-bright); color: #062026;
+      border-radius: 999px; padding: 0.8rem 1.6rem;
+      font-weight: 600; font-size: 0.95rem; line-height: 1.2;
+      transition: transform .15s ease, filter .15s ease;
+    }
+    .cta:hover { transform: translateY(-1px); filter: brightness(1.06); }
+    .cta:focus-visible { outline: 2px solid var(--color-teal-bright); outline-offset: 3px; }
+    .cta svg { width: 17px; height: 17px; fill: currentColor; flex: none; }
+
     /* ------------------------------------------------------------- footer */
     footer {
       text-align: center; color: var(--color-text-muted); font-size: 0.85rem;
@@ -178,7 +192,7 @@
 </head>
 <body>
   <nav>
-    <span class="nav-wordmark">EPE FIELD</span>
+    <span class="nav-wordmark">DENTAL X-RAY EPE WORKFLOW</span>
     <span class="nav-links">
       <a href="#workflow">Workflow</a>
       <a href="#guardrails">Guardrails</a>
@@ -190,17 +204,20 @@
   <header class="hero">
     <div class="hero-inner">
       <div>
-        <p class="eyebrow">Dental X-ray EPE workflow</p>
+        <p class="eyebrow">Field workspace for inspectors</p>
         <h1>Know what is due before you arrive.</h1>
         <p class="lede">
           An equipment performance evaluation is a day of measurements and a lifetime of paperwork.
-          EPE Field keeps the facilities, the units, the due dates, the instrument you measured with,
+          This app keeps the facilities, the units, the due dates, the instrument you measured with,
           and the numbers you wrote down in one place — then locks the record when you sign it.
         </p>
-        <p class="badge"><span class="dot"></span> <strong>Coming soon</strong> to the App Store · iPhone &amp; iPad</p>
+        <p class="cta-row">
+          <a class="cta" href="https://apps.apple.com/us/app/dental-x-ray-epe-workflow/id6790243553"><svg viewBox="0 0 384 512" aria-hidden="true" focusable="false"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>Get it on the App Store</a>
+          <span class="badge"><span class="dot"></span> <strong>$39.99</strong> · iPhone &amp; iPad · on your Home Screen as <strong>EPE Field</strong></span>
+        </p>
       </div>
       <div class="hero-shot">
-        <img src="screenshots/01.png" alt="EPE Field overview screen: zero overdue, two due soon, one current, with a Needs attention list of X-ray units." width="414" height="900">
+        <img src="screenshots/01.png" alt="Overview screen: zero overdue, two due soon, one current, with a Needs attention list of X-ray units." width="414" height="900">
       </div>
     </div>
     <div class="statusbar">
@@ -332,7 +349,7 @@
       <div class="regbox">
         <h2>Where this app stops</h2>
         <p>
-          EPE Field is a workflow tool, not a certification authority. It does not determine regulatory
+          Dental X-Ray EPE Workflow is a workflow tool, not a certification authority. It does not determine regulatory
           pass or fail status, authorize inspectors, or replace qualified professional judgement. Every
           pass/fail decision remains with the authorized professional who signed the report.
         </p>
@@ -357,7 +374,7 @@
     </div>
     <p class="disclaimer">
       Screenshots show sample data. Facility, practice, and equipment names shown are fictional. Product
-      names of X-ray units and survey meters belong to their manufacturers; EPE Field is not affiliated
+      names of X-ray units and survey meters belong to their manufacturers; this app is not affiliated
       with or endorsed by any of them.
     </p>
     <p>© 2026 Addicting Apps · <a href="https://www.addictingapps.org">addictingapps.org</a></p>
