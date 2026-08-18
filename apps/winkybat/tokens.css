@@ -1,0 +1,49 @@
+/* Winky Bat — cave dark, sky blue, echolocation cyan. */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  /* Surfaces */
+  --color-bg:             #0d1420;
+  --color-bg-raised:      #141d2c;
+  --color-surface:        #1b2637;
+  --color-cave:           #0a0f18;
+  --color-border:         #26344a;
+
+  /* Brand */
+  --color-blue:           #3d9bf5;
+  --color-cyan:           #5fe3f0;
+  --color-sky:            #a8dcff;
+  --color-green:          #3ddc84;
+  --color-warn:           #ffb347;
+
+  /* Text */
+  --color-text:           #eef4fb;
+  --color-text-secondary: #a2b3c8;
+  --color-text-muted:     #6d7f96;
+
+  /* Typography */
+  --font-display: 'Fredoka', system-ui, sans-serif;
+  --font-ui:      'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Type scale */
+  --text-hero:       clamp(2.375rem, 6vw, 4rem);
+  --text-display-lg: clamp(1.75rem, 3.5vw, 2.375rem);
+  --text-display-md: 1.375rem;
+  --text-body-lg:    1.125rem;
+  --text-body-md:    1rem;
+  --text-label:      0.75rem;
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1.25rem;
+  --space-lg: 2rem;
+  --space-xl: 3.5rem;
+  --space-2xl: 5.5rem;
+
+  /* Shape */
+  --radius:    16px;
+  --radius-lg: 24px;
+  --shadow:    0 1px 2px rgba(0,0,0,0.5), 0 12px 32px rgba(0,0,0,0.45);
+  --maxw:      1080px;
+}

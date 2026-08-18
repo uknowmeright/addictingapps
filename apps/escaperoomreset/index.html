@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escape Room Reset — Photo-guided room resets for game masters</title>
+  <meta name="description" content="Turn your room reset into an ordered, photo-guided checklist any game master can run perfectly. Reset timer, required double-check pass, incident reports, signed history, PDF and CSV exports. Fully offline, one-time purchase.">
+  <meta property="og:title" content="Escape Room Reset">
+  <meta property="og:description" content="Reset every room right, every time. Photo-guided checklists on one shared iPad at the game master station.">
+  <meta property="og:image" content="screenshots/02-run.png">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-ui);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ---------------------------------------------------------------- nav */
+    nav {
+      background: var(--color-bg-deep);
+      padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 20;
+    }
+    .nav-wordmark {
+      font-family: var(--font-display); font-size: 1rem; font-weight: 700;
+      letter-spacing: 3px; color: var(--color-brass-bright);
+    }
+    .nav-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .nav-links a { font-size: 0.875rem; color: rgba(250,246,239,0.78); transition: color .2s; }
+    .nav-links a:hover { color: #fff; }
+
+    /* --------------------------------------------------------------- hero */
+    .hero {
+      background:
+        radial-gradient(100% 80% at 78% 10%, rgba(161,98,7,0.16), transparent 60%),
+        var(--color-bg);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .hero-inner {
+      max-width: var(--maxw); margin: 0 auto;
+      padding: var(--space-2xl) 1.5rem var(--space-xl);
+      display: grid; grid-template-columns: 1.05fr 1fr; gap: var(--space-xl);
+      align-items: center;
+    }
+    .eyebrow {
+      font-size: var(--text-label); letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--color-brass); font-weight: 600; margin-bottom: var(--space-sm);
+    }
+    .eyebrow::after {
+      content: ''; display: block; width: 26px; height: 2px;
+      background: var(--color-brass); margin-top: 6px;
+    }
+    h1 {
+      font-family: var(--font-display); font-size: var(--text-hero);
+      font-weight: 600; line-height: 1.06; letter-spacing: -0.015em;
+      margin-bottom: var(--space-md);
+    }
+    .lede { font-size: var(--text-body-lg); color: var(--color-text-secondary); margin-bottom: var(--space-lg); }
+    .hero-shot img {
+      border-radius: 30px; box-shadow: var(--shadow-lg);
+      border: 1px solid var(--color-border); margin: 0 auto; max-width: 320px;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: 999px; padding: 0.6rem 1.1rem;
+      font-size: 0.9rem; color: var(--color-text-secondary);
+    }
+    .badge strong { color: var(--color-text); font-weight: 600; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-brass); }
+
+    /* ----------------------------------------------------------- sections */
+    section { padding: var(--space-2xl) 1.5rem; }
+    .wrap { max-width: var(--maxw); margin: 0 auto; }
+    .section-head { max-width: 660px; margin-bottom: var(--space-xl); }
+    h2 {
+      font-family: var(--font-display); font-size: var(--text-display-lg);
+      font-weight: 600; margin-bottom: var(--space-sm); line-height: 1.15;
+      letter-spacing: -0.01em;
+    }
+    .section-head p { color: var(--color-text-secondary); font-size: var(--text-body-lg); }
+    .band { background: var(--color-surface); border-block: 1px solid var(--color-border); }
+    .band-dark {
+      background: linear-gradient(150deg, var(--color-bg-deep), var(--color-bg-deeper));
+      color: var(--color-text-invert);
+    }
+    .band-dark h2 { color: var(--color-brass-bright); }
+    .band-dark .section-head p { color: rgba(250,246,239,0.8); }
+
+    /* --------------------------------------------------------- the clock */
+    .clock {
+      display: grid; grid-template-columns: auto 1fr; gap: var(--space-lg);
+      align-items: center;
+      background: var(--color-surface-sunken); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg); padding: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+    .clock .big {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: clamp(2.5rem, 7vw, 4.5rem); line-height: 1; color: var(--color-brass);
+    }
+    .clock .big small { display: block; font-family: var(--font-ui); font-size: 0.8rem; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--color-text-muted); margin-top: 8px; }
+    .clock p { color: var(--color-text-secondary); }
+
+    /* -------------------------------------------------------------- steps */
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+    .step-num {
+      font-family: var(--font-display); font-size: 1.05rem; font-weight: 700;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--color-brass); color: #1d1811;
+      display: grid; place-items: center; margin-bottom: var(--space-sm);
+    }
+    .step h3 { font-family: var(--font-display); font-size: var(--text-display-md); font-weight: 600; margin-bottom: 6px; }
+    .step p { color: var(--color-text-secondary); font-size: var(--text-body-md); }
+
+    /* ------------------------------------------------------------ gallery */
+    .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+    .shot img {
+      border-radius: 22px; border: 1px solid var(--color-border);
+      box-shadow: var(--shadow); margin-bottom: var(--space-sm);
+    }
+    .shot h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; margin-bottom: 4px; }
+    .shot p { font-size: 0.9375rem; color: var(--color-text-secondary); }
+
+    /* ----------------------------------------------------------- features */
+    .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
+    .feature {
+      background: var(--color-bg); border: 1px solid var(--color-border);
+      border-radius: var(--radius); padding: var(--space-md) var(--space-lg);
+      border-top: 3px solid var(--color-brass);
+    }
+    .feature:nth-child(2) { border-top-color: var(--color-rust); }
+    .feature:nth-child(3) { border-top-color: var(--color-teal); }
+    .feature:nth-child(4) { border-top-color: var(--color-plum); }
+    .feature h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; margin-bottom: 4px; }
+    .feature p { font-size: 0.9375rem; color: var(--color-text-secondary); }
+
+    /* ------------------------------------------------------------ honesty */
+    .honest { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
+    .honest div { border-left: 2px solid var(--color-brass-bright); padding-left: var(--space-md); }
+    .honest h3 { font-size: 1rem; font-weight: 600; color: var(--color-brass-bright); margin-bottom: 4px; }
+    .honest p { font-size: 0.9375rem; color: rgba(250,246,239,0.8); }
+
+    /* ------------------------------------------------------------ pricing */
+    .price-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); max-width: 760px; }
+    .price {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg); padding: var(--space-lg);
+    }
+    .price.paid { border-color: var(--color-brass); box-shadow: var(--shadow); }
+    .price .tier { font-size: var(--text-label); letter-spacing: 2px; text-transform: uppercase; color: var(--color-brass); font-weight: 600; }
+    .price .amount { font-family: var(--font-display); font-size: 2.25rem; font-weight: 700; margin: 6px 0 2px; }
+    .price .note { font-size: 0.875rem; color: var(--color-text-muted); margin-bottom: var(--space-md); }
+    .price ul { list-style: none; }
+    .price li { font-size: 0.9375rem; color: var(--color-text-secondary); padding-left: 1.4rem; position: relative; margin-bottom: 6px; }
+    .price li::before { content: '·'; position: absolute; left: 0.5rem; color: var(--color-brass); font-weight: 700; }
+
+    /* ------------------------------------------------------------- footer */
+    footer {
+      text-align: center; color: var(--color-text-muted); font-size: 0.85rem;
+      padding: var(--space-xl) 1.5rem var(--space-2xl);
+      border-top: 1px solid var(--color-border);
+    }
+    footer a { color: var(--color-brass); }
+    footer a:hover { text-decoration: underline; }
+    .footer-links { display: flex; gap: 1.25rem; justify-content: center; margin-bottom: var(--space-sm); flex-wrap: wrap; }
+    .disclaimer { max-width: 620px; margin: 0 auto var(--space-sm); }
+
+    @media (max-width: 860px) {
+      .hero-inner { grid-template-columns: 1fr; padding-top: var(--space-xl); }
+      .hero-shot { order: -1; }
+      .steps, .gallery, .features, .price-grid, .honest, .clock { grid-template-columns: 1fr; }
+      section { padding: var(--space-xl) 1.5rem; }
+      nav { padding: 1rem 1.25rem; flex-direction: column; gap: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <span class="nav-wordmark">ROOM RESET</span>
+    <span class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="support.html">Support</a>
+      <a href="privacy.html">Privacy</a>
+    </span>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <p class="eyebrow">Escape room reset checklist</p>
+        <h1>Thirty-odd things, seven minutes, one shot.</h1>
+        <p class="lede">
+          Between bookings your game master has to relock the padlocks, re-shelve the props, rewind the
+          mechanism, and put the combination back to where it started. Miss one and the next team hits a
+          dead end that isn't part of the game. This app is that checklist, with a photo of what right
+          looks like beside every step.
+        </p>
+        <p class="badge"><span class="dot"></span> <strong>Coming soon</strong> to the App Store · iPhone &amp; iPad, iOS 17+</p>
+      </div>
+      <div class="hero-shot">
+        <img src="screenshots/02-run.png" alt="A reset in progress: the timer reads 0:01 against a 7:00 target, above a reference photo of a desk and the step Set the cipher wheel to K." width="414" height="900">
+      </div>
+    </div>
+  </header>
+
+  <section id="how" class="band">
+    <div class="wrap">
+      <div class="clock">
+        <div class="big">7:00<small>your target turnaround</small></div>
+        <p>
+          Existing game-master platforms reset your <em>electronic</em> puzzles from a PC in the control
+          room. Nothing covers the physical half — the padlocks, the drawers, the props that walked off
+          in someone's pocket. Escape Room Reset is deliberately only that half, and it is the half that
+          costs you reviews.
+        </p>
+      </div>
+      <div class="section-head">
+        <h2>Author once, run it forever</h2>
+        <p>Set the room up the way your best game master does it, and everyone else inherits their standard.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <h3>Photograph the right state</h3>
+          <p>Each step gets reference photos of what correct looks like — the wheel at K, the drawer shut, the key back on its hook.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <h3>Run it in reverse</h3>
+          <p>Steps play in reverse solve order, the way a room actually gets reset, on big photo-first cards built for a shared device.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <h3>Double-check, then sign</h3>
+          <p>A second confirmation sweep is required before anyone can sign off with their initials. The log records who and when.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Built for the game master station</h2>
+        <p>One iPad on the counter, shared by every shift. No logins to hand out and nothing to remember.</p>
+      </div>
+      <div class="gallery">
+        <div class="shot">
+          <img src="screenshots/01-rooms.png" alt="Rooms list showing three rooms with their step counts and when each was last reset, and by whom." width="414" height="900" loading="lazy">
+          <h3>Every room you run</h3>
+          <p>Colour-coded rooms with their step counts, and when each was last reset and by whom, right on the list.</p>
+        </div>
+        <div class="shot">
+          <img src="screenshots/04-history.png" alt="Reset history listing past runs with durations against target and who signed them off." width="414" height="900" loading="lazy">
+          <h3>Proof for the owner</h3>
+          <p>Every reset logged with its duration against target and the initials of whoever signed it. Weekly PDF and CSV export.</p>
+        </div>
+        <div class="shot">
+          <img src="screenshots/05-incidents.png" alt="Incidents screen listing reported missing and broken props with photos." width="414" height="900" loading="lazy">
+          <h3>When props go missing</h3>
+          <p>Report a missing or broken prop mid-reset with a photo and a note. It stays visible until somebody fixes it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Details that survive a busy Saturday</h2>
+      </div>
+      <div class="features">
+        <div class="feature">
+          <h3>A timer with a target</h3>
+          <p>Your turnaround goal is on screen the whole time, so a slow reset is visible while it is still happening.</p>
+        </div>
+        <div class="feature">
+          <h3>Accountable sign-off</h3>
+          <p>Initials, optionally protected by a PIN, so a signed reset means a specific person stood in that room.</p>
+        </div>
+        <div class="feature">
+          <h3>Backup in one file</h3>
+          <p>Every room, step, photo, and log in a single file you can carry to a replacement device.</p>
+        </div>
+        <div class="feature">
+          <h3>Completely offline</h3>
+          <p>No accounts, no cloud, no tracking, no subscription. The venue Wi-Fi going down is not your problem.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band-dark">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What it deliberately isn't</h2>
+        <p>Escape room software usually tries to be everything. This does one job so it can be trusted to do it.</p>
+      </div>
+      <div class="honest">
+        <div>
+          <h3>Not a booking system</h3>
+          <p>It never touches your calendar, your customers, or your payments. Keep whatever you already use.</p>
+        </div>
+        <div>
+          <h3>Not a prop controller</h3>
+          <p>It cannot trigger a maglock or reset an electronic puzzle. It tells a human what to do with their hands.</p>
+        </div>
+        <div>
+          <h3>Not a hint system</h3>
+          <p>Nothing here runs during a game. It lives in the gap between one team leaving and the next arriving.</p>
+        </div>
+        <div>
+          <h3>Not a multi-device sync</h3>
+          <p>The log lives on the device that recorded it. That is why backup is one file and why it works with no network at all.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Your first room, free and complete.</h2>
+        <p>Not a trial — a full room with every feature, for as long as you want it.</p>
+      </div>
+      <div class="price-grid">
+        <div class="price">
+          <p class="tier">Free</p>
+          <p class="amount">$0</p>
+          <p class="note">One room, nothing held back</p>
+          <ul>
+            <li>Unlimited steps and reference photos</li>
+            <li>Timer, double-check pass, and sign-off</li>
+            <li>Incidents, history, PDF and CSV export</li>
+            <li>Backup and restore</li>
+          </ul>
+        </div>
+        <div class="price paid">
+          <p class="tier">Reset Pro</p>
+          <p class="amount">$49.99</p>
+          <p class="note">One-time purchase, not a subscription</p>
+          <ul>
+            <li>Unlimited rooms</li>
+            <li>Everything in the free tier, across all of them</li>
+            <li>All future updates</li>
+            <li>Cheaper than one bad review</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="support.html">Support</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="mailto:support@addictingapps.org">Contact</a>
+      <a href="/">Addicting Apps</a>
+    </div>
+    <p class="disclaimer">Screenshots show a sample room with fictional puzzles and staff.</p>
+    <p>© 2026 Addicting Apps · <a href="https://www.addictingapps.org">addictingapps.org</a></p>
+  </footer>
+</body>
+</html>

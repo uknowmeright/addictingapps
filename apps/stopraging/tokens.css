@@ -1,0 +1,54 @@
+/* StopRaging — the app's two moods: the red of the moment, the blue that follows. */
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  /* Surfaces */
+  --color-bg:             #0f1116;
+  --color-bg-raised:      #161a22;
+  --color-surface:        #1c212b;
+  --color-border:         #2a313e;
+
+  /* Rage */
+  --color-rage:           #e5484d;
+  --color-rage-soft:      #ff8b8e;
+  --color-rage-mid:       #f2b134;
+  --color-rage-low:       #4a90d9;
+
+  /* Calm */
+  --color-calm-deep:      #1b2250;
+  --color-calm:           #4a90d9;
+  --color-calm-soft:      #6282e3;
+  --color-calm-sky:       #bbdefb;
+  --color-sage:           #6c9c83;
+
+  /* Text */
+  --color-text:           #eef1f6;
+  --color-text-secondary: #a6afbe;
+  --color-text-muted:     #6f7889;
+
+  /* Typography */
+  --font-display: 'Archivo', system-ui, sans-serif;
+  --font-ui:      'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Type scale */
+  --text-hero:       clamp(2.25rem, 5.5vw, 3.875rem);
+  --text-display-lg: clamp(1.75rem, 3.5vw, 2.375rem);
+  --text-display-md: 1.375rem;
+  --text-body-lg:    1.125rem;
+  --text-body-md:    1rem;
+  --text-label:      0.75rem;
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1.25rem;
+  --space-lg: 2rem;
+  --space-xl: 3.5rem;
+  --space-2xl: 5.5rem;
+
+  /* Shape */
+  --radius:    14px;
+  --radius-lg: 22px;
+  --shadow:    0 1px 2px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.4);
+  --maxw:      1080px;
+}

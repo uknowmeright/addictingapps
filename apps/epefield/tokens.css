@@ -1,0 +1,55 @@
+/* EPE Field — the app's own palette: instrument ink, diagnostic teal, calibration amber. */
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  /* Surfaces */
+  --color-bg:             #f4f7f8;
+  --color-bg-deep:        #053449;
+  --color-bg-deeper:      #09161f;
+  --color-surface:        #ffffff;
+  --color-surface-sunken: #e6eef0;
+  --color-border:         #d5e0e3;
+
+  /* Brand */
+  --color-ink:            #09161f;
+  --color-teal:           #006e7d;
+  --color-teal-bright:    #38d1d6;
+  --color-amber:          #a15700;
+  --color-amber-bright:   #ffb84f;
+  --color-alert:          #b3282d;
+  --color-ok:             #157347;
+
+  /* Text */
+  --color-text:           #10202a;
+  --color-text-secondary: #3d525d;
+  --color-text-muted:     #6b7f89;
+  --color-text-invert:    #eef6f7;
+
+  /* Typography */
+  --font-display: 'Inter Tight', system-ui, sans-serif;
+  --font-ui:      'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono:    'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+
+  /* Type scale */
+  --text-hero:       clamp(2.125rem, 5vw, 3.375rem);
+  --text-display-lg: clamp(1.625rem, 3.2vw, 2.25rem);
+  --text-display-md: 1.3125rem;
+  --text-body-lg:    1.125rem;
+  --text-body-md:    1rem;
+  --text-label:      0.75rem;
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1.25rem;
+  --space-lg: 2rem;
+  --space-xl: 3.5rem;
+  --space-2xl: 5.5rem;
+
+  /* Shape */
+  --radius:    12px;
+  --radius-lg: 18px;
+  --shadow:    0 1px 2px rgba(9, 22, 31, 0.05), 0 8px 24px rgba(9, 22, 31, 0.07);
+  --shadow-lg: 0 2px 4px rgba(9, 22, 31, 0.06), 0 20px 50px rgba(9, 22, 31, 0.14);
+  --maxw:      1080px;
+}

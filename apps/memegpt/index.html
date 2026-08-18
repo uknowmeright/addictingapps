@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MemeGPT — Point your camera. Get a caption.</title>
+  <meta name="description" content="Snap a photo and MemeGPT works out what it is looking at, writes a short satirical caption, burns it onto the image, and hands you something to share. No caption to write, no template to pick.">
+  <meta property="og:title" content="MemeGPT">
+  <meta property="og:description" content="Snap a picture. Get a meme. Share it before the moment passes.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-ui);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ---------------------------------------------------------------- nav */
+    nav {
+      background: var(--color-ink); color: var(--color-text-invert);
+      padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 20;
+      border-bottom: 4px solid var(--color-ink);
+    }
+    .nav-wordmark {
+      font-family: var(--font-display); font-size: 1.125rem;
+      letter-spacing: -0.01em; text-transform: uppercase;
+    }
+    .nav-wordmark span { color: var(--color-bg); }
+    .nav-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .nav-links a { font-size: 0.875rem; color: rgba(255,253,242,0.75); transition: color .2s; }
+    .nav-links a:hover { color: #fff; }
+
+    /* --------------------------------------------------------------- hero */
+    .hero { border-bottom: 4px solid var(--color-ink); }
+    .hero-inner {
+      max-width: var(--maxw); margin: 0 auto;
+      padding: var(--space-2xl) 1.5rem var(--space-xl);
+      display: grid; grid-template-columns: 1.1fr 0.9fr; gap: var(--space-xl);
+      align-items: center;
+    }
+    .eyebrow {
+      font-family: var(--font-display); font-size: var(--text-label);
+      letter-spacing: 2px; text-transform: uppercase;
+      background: var(--color-ink); color: var(--color-bg);
+      display: inline-block; padding: 0.35rem 0.7rem; margin-bottom: var(--space-md);
+    }
+    h1 {
+      font-family: var(--font-display); font-size: var(--text-hero);
+      line-height: 0.95; letter-spacing: -0.03em; text-transform: uppercase;
+      margin-bottom: var(--space-md);
+    }
+    .lede { font-size: var(--text-body-lg); color: var(--color-text-secondary); margin-bottom: var(--space-lg); max-width: 46ch; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--color-surface); border: 3px solid var(--color-ink);
+      padding: 0.6rem 1.1rem; font-size: 0.9rem; box-shadow: 4px 4px 0 var(--color-ink);
+    }
+    .badge strong { font-weight: 700; }
+
+    /* the meme mock */
+    .memecard {
+      background: var(--color-surface); border: 4px solid var(--color-ink);
+      box-shadow: var(--shadow-lg); max-width: 340px; margin: 0 auto;
+    }
+    .memecard .photo {
+      aspect-ratio: 4 / 5; position: relative;
+      background:
+        linear-gradient(140deg, #7fb0d8 0%, #b9d4e6 40%, #dfe8c9 41%, #96b06a 100%);
+      display: grid; place-items: end center; overflow: hidden;
+    }
+    .memecard .photo::before {
+      content: '📸'; position: absolute; top: 42%; left: 50%;
+      transform: translate(-50%, -50%); font-size: 3.5rem; opacity: 0.35;
+    }
+    .memecard .caption {
+      width: 100%; background: rgba(0,0,0,0.55); color: #fff;
+      font-family: var(--font-display); text-transform: uppercase;
+      font-size: 1.25rem; line-height: 1.05; text-align: center;
+      padding: 0.75rem 0.5rem;
+    }
+    .memecard .bar {
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 4px solid var(--color-ink); padding: 0.6rem 0.9rem;
+      font-size: 0.8125rem; font-weight: 600;
+    }
+    .memecard .bar .tokens { color: var(--color-magenta); }
+
+    /* ----------------------------------------------------------- sections */
+    section { padding: var(--space-2xl) 1.5rem; border-bottom: 4px solid var(--color-ink); }
+    .wrap { max-width: var(--maxw); margin: 0 auto; }
+    .section-head { max-width: 660px; margin-bottom: var(--space-xl); }
+    h2 {
+      font-family: var(--font-display); font-size: var(--text-display-lg);
+      text-transform: uppercase; letter-spacing: -0.02em;
+      margin-bottom: var(--space-sm); line-height: 1.05;
+    }
+    .section-head p { color: var(--color-text-secondary); font-size: var(--text-body-lg); }
+    .band { background: var(--color-bg-alt); }
+    .band-ink { background: var(--color-ink); color: var(--color-text-invert); }
+    .band-ink h2 { color: var(--color-bg); }
+    .band-ink .section-head p { color: rgba(255,253,242,0.8); }
+
+    /* -------------------------------------------------------------- steps */
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+    .step {
+      background: var(--color-surface); border: 4px solid var(--color-ink);
+      padding: var(--space-lg); box-shadow: var(--shadow);
+    }
+    .step .n {
+      font-family: var(--font-display); font-size: 2.5rem; line-height: 1;
+      margin-bottom: var(--space-sm); color: var(--color-magenta);
+    }
+    .step:nth-child(2) .n { color: var(--color-cyan); }
+    .step:nth-child(3) .n { color: var(--color-ink); }
+    .step h3 { font-family: var(--font-display); font-size: 1.125rem; text-transform: uppercase; margin-bottom: 6px; }
+    .step p { font-size: 0.9375rem; color: var(--color-text-secondary); }
+
+    /* ------------------------------------------------------------- tokens */
+    .tokens-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); max-width: 780px; }
+    .token {
+      background: var(--color-surface); border: 4px solid var(--color-ink);
+      padding: var(--space-lg); text-align: center; box-shadow: var(--shadow);
+    }
+    .token .count { font-family: var(--font-display); font-size: 2rem; line-height: 1; }
+    .token .price { font-family: var(--font-display); font-size: 1.25rem; color: var(--color-magenta); margin-top: 6px; }
+    .token p { font-size: 0.875rem; color: var(--color-text-muted); margin-top: 6px; }
+
+    /* ------------------------------------------------------------ honesty */
+    .honest { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
+    .honest div { border-left: 4px solid var(--color-bg); padding-left: var(--space-md); }
+    .honest h3 { font-family: var(--font-display); font-size: 1.0625rem; text-transform: uppercase; color: var(--color-bg); margin-bottom: 4px; }
+    .honest p { font-size: 0.9375rem; color: rgba(255,253,242,0.8); }
+
+    /* ------------------------------------------------------------- footer */
+    footer {
+      background: var(--color-ink); color: rgba(255,253,242,0.6);
+      text-align: center; font-size: 0.85rem;
+      padding: var(--space-xl) 1.5rem var(--space-2xl);
+      border-bottom: none;
+    }
+    footer a { color: var(--color-bg); }
+    footer a:hover { text-decoration: underline; }
+    .footer-links { display: flex; gap: 1.25rem; justify-content: center; margin-bottom: var(--space-sm); flex-wrap: wrap; }
+    .disclaimer { max-width: 640px; margin: 0 auto var(--space-sm); }
+
+    @media (max-width: 860px) {
+      .hero-inner, .steps, .tokens-grid, .honest { grid-template-columns: 1fr; }
+      .hero-inner { padding-top: var(--space-xl); }
+      section { padding: var(--space-xl) 1.5rem; }
+      nav { padding: 1rem 1.25rem; flex-direction: column; gap: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <span class="nav-wordmark">Meme<span>GPT</span></span>
+    <span class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#tokens">Tokens</a>
+      <a href="#honest">Honestly</a>
+      <a href="mailto:support@addictingapps.org">Contact</a>
+    </span>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <p class="eyebrow">Camera in, meme out</p>
+        <h1>You are not funny fast enough.</h1>
+        <p class="lede">
+          The moment is happening right now — the dog, the queue, your friend's parking attempt — and by
+          the time you have thought of the caption it is over. MemeGPT looks at the photo, works out
+          what is in it, writes the line, and burns it onto the image. You just point and share.
+        </p>
+        <p class="badge"><strong>In development</strong> · iPhone</p>
+      </div>
+      <div class="memecard" aria-hidden="true">
+        <div class="photo">
+          <p class="caption">Your caption appears here</p>
+        </div>
+        <div class="bar"><span>Show me a new one</span><span class="tokens">9 tokens left</span></div>
+      </div>
+    </div>
+  </header>
+
+  <section id="how" class="band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Three taps, no writing</h2>
+        <p>There is no template picker, no caption box, and no font menu. That is the entire pitch.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <p class="n">1</p>
+          <h3>Snap or pick</h3>
+          <p>Take the photo in the app or choose one from your library. Anything with something recognisable in it will do.</p>
+        </div>
+        <div class="step">
+          <p class="n">2</p>
+          <h3>It reads the picture</h3>
+          <p>An image-captioning model describes what is actually in the frame, and a language model turns that description into a short, satirical line.</p>
+        </div>
+        <div class="step">
+          <p class="n">3</p>
+          <h3>Don't like it? Again.</h3>
+          <p>"Show me a new one" rerolls the caption on the same photo. The line is drawn onto the image, ready for the share sheet.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tokens">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Tokens, because captions cost money</h2>
+        <p>
+          Every meme is a round trip to two AI models, and each round trip costs the developer real
+          money. You start with ten on the house. After that, a top-up covers the bill.
+        </p>
+      </div>
+      <div class="tokens-grid">
+        <div class="token">
+          <p class="count">50</p>
+          <p class="price">$0.99</p>
+          <p>meme tokens</p>
+        </div>
+        <div class="token">
+          <p class="count">500</p>
+          <p class="price">$3.99</p>
+          <p>meme tokens</p>
+        </div>
+        <div class="token">
+          <p class="count">1000</p>
+          <p class="price">$6.99</p>
+          <p>meme tokens</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="honest" class="band-ink">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Honestly, though</h2>
+        <p>It is a joke machine. Joke machines miss.</p>
+      </div>
+      <div class="honest">
+        <div>
+          <h3>It will not always be funny</h3>
+          <p>Sometimes the caption is perfect. Sometimes it describes your lunch with the enthusiasm of a stock photo caption. Reroll and move on.</p>
+        </div>
+        <div>
+          <h3>It only knows what it can see</h3>
+          <p>The joke comes from a machine description of the picture. It has no idea who those people are, what the day was, or why it was funny to you.</p>
+        </div>
+        <div>
+          <h3>Your photo goes to a model</h3>
+          <p>To caption an image, that image has to be sent to a hosted AI service. Do not feed it anything you would not paste into a chat window.</p>
+        </div>
+        <div>
+          <h3>You still own the joke</h3>
+          <p>The image is yours and stays in your library. MemeGPT does not post anything anywhere — sharing is the iOS share sheet and nothing else.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="mailto:support@addictingapps.org">Contact</a>
+      <a href="/">Addicting Apps</a>
+    </div>
+    <p class="disclaimer">
+      The card above is an illustration, not a screenshot. MemeGPT is not affiliated with OpenAI or any
+      other AI provider; "GPT" here describes the kind of model that writes the caption.
+    </p>
+    <p>© 2026 Addicting Apps · <a href="https://www.addictingapps.org">addictingapps.org</a></p>
+  </footer>
+</body>
+</html>

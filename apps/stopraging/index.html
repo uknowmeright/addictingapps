@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StopRaging — Log the light. Breathe. Move on.</title>
+  <meta name="description" content="One tap logs the traffic light that just ruined your morning, drops it on a shared map of the worst intersections, and then walks you through a breath. CarPlay ready, with a cooldown that stops you doom-tapping.">
+  <meta property="og:title" content="StopRaging">
+  <meta property="og:description" content="One tap for the light that ruined your morning — then a breath, and a map that proves it is not just you.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-ui);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ---------------------------------------------------------------- nav */
+    nav {
+      background: rgba(15,17,22,0.9); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--color-border);
+      padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 20;
+    }
+    .nav-wordmark {
+      font-family: var(--font-display); font-size: 1rem; font-weight: 800;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .nav-wordmark .stop { color: var(--color-rage); }
+    .nav-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .nav-links a { font-size: 0.875rem; color: var(--color-text-secondary); transition: color .2s; }
+    .nav-links a:hover { color: var(--color-text); }
+
+    /* --------------------------------------------------------------- hero */
+    .hero {
+      background:
+        radial-gradient(70% 55% at 12% 8%, rgba(229,72,77,0.20), transparent 62%),
+        radial-gradient(75% 60% at 88% 85%, rgba(74,144,217,0.18), transparent 65%);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .hero-inner {
+      max-width: var(--maxw); margin: 0 auto;
+      padding: var(--space-2xl) 1.5rem var(--space-xl);
+      display: grid; grid-template-columns: 1.15fr 0.85fr; gap: var(--space-xl);
+      align-items: center;
+    }
+    .eyebrow {
+      font-family: var(--font-display); font-size: var(--text-label);
+      letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--color-rage-soft); font-weight: 600; margin-bottom: var(--space-sm);
+    }
+    h1 {
+      font-family: var(--font-display); font-size: var(--text-hero);
+      font-weight: 800; line-height: 1.02; letter-spacing: -0.025em;
+      margin-bottom: var(--space-md);
+    }
+    .lede { font-size: var(--text-body-lg); color: var(--color-text-secondary); margin-bottom: var(--space-lg); }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: 999px; padding: 0.6rem 1.1rem;
+      font-size: 0.9rem; color: var(--color-text-secondary);
+    }
+    .badge strong { color: var(--color-text); font-weight: 600; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-rage); }
+
+    /* the two-state device figure */
+    .figure { display: grid; place-items: center; }
+    .rage-button {
+      width: min(240px, 70vw); aspect-ratio: 1; border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, var(--color-rage-soft), var(--color-rage) 55%, #96181d 100%);
+      display: grid; place-items: center; text-align: center;
+      font-family: var(--font-display); font-weight: 800; letter-spacing: 1px;
+      text-transform: uppercase; font-size: 1.05rem; color: #fff;
+      box-shadow: 0 0 0 12px rgba(229,72,77,0.10), 0 0 0 26px rgba(229,72,77,0.05), var(--shadow);
+    }
+    .figure .caption {
+      margin-top: var(--space-md); font-size: 0.875rem; color: var(--color-text-muted);
+      text-align: center;
+    }
+
+    /* ----------------------------------------------------------- sections */
+    section { padding: var(--space-2xl) 1.5rem; }
+    .wrap { max-width: var(--maxw); margin: 0 auto; }
+    .section-head { max-width: 660px; margin-bottom: var(--space-xl); }
+    h2 {
+      font-family: var(--font-display); font-size: var(--text-display-lg);
+      font-weight: 700; letter-spacing: -0.02em; margin-bottom: var(--space-sm); line-height: 1.15;
+    }
+    .section-head p { color: var(--color-text-secondary); font-size: var(--text-body-lg); }
+    .band { background: var(--color-bg-raised); border-block: 1px solid var(--color-border); }
+    .band-calm {
+      background: linear-gradient(160deg, var(--color-calm-deep), #0d1230 70%);
+      border-block: 1px solid var(--color-border);
+    }
+    .band-calm h2 { color: var(--color-calm-sky); }
+    .band-calm .section-head p { color: rgba(187,222,251,0.78); }
+
+    /* -------------------------------------------------------------- steps */
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+    .step {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius); padding: var(--space-lg);
+    }
+    .step .n {
+      font-family: var(--font-display); font-size: 2.5rem; font-weight: 800;
+      line-height: 1; color: var(--color-rage); opacity: 0.5; margin-bottom: var(--space-sm);
+    }
+    .step:nth-child(2) .n { color: var(--color-rage-mid); }
+    .step:nth-child(3) .n { color: var(--color-calm); }
+    .step h3 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; margin-bottom: 6px; }
+    .step p { font-size: 0.9375rem; color: var(--color-text-secondary); }
+
+    /* ------------------------------------------------------------ heatmap */
+    .heat { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); align-items: center; }
+    .heat-key { display: flex; flex-direction: column; gap: var(--space-sm); }
+    .heat-key div { display: flex; align-items: center; gap: 0.75rem; font-size: 0.9375rem; color: var(--color-text-secondary); }
+    .heat-key i { width: 14px; height: 14px; border-radius: 50%; display: inline-block; flex: none; }
+    .heat-key .low  { background: var(--color-rage-low); box-shadow: 0 0 0 5px rgba(74,144,217,0.18); }
+    .heat-key .mid  { background: var(--color-rage-mid); box-shadow: 0 0 0 5px rgba(242,177,52,0.18); }
+    .heat-key .high { background: var(--color-rage); box-shadow: 0 0 0 5px rgba(229,72,77,0.18); }
+    .buckets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-top: var(--space-md); }
+    .buckets div {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: 10px; padding: 0.75rem; text-align: center;
+    }
+    .buckets .t { font-family: var(--font-display); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text-muted); }
+    .buckets .v { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; }
+
+    /* ----------------------------------------------------------- features */
+    .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
+    .feature {
+      border-left: 2px solid var(--color-calm); padding-left: var(--space-md);
+    }
+    .feature h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin-bottom: 4px; }
+    .feature p { font-size: 0.9375rem; color: var(--color-text-secondary); }
+
+    /* ------------------------------------------------------------ honesty */
+    .honest { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
+    .honest div { border-left: 2px solid var(--color-rage); padding-left: var(--space-md); }
+    .honest h3 { font-size: 1rem; font-weight: 600; color: var(--color-rage-soft); margin-bottom: 4px; }
+    .honest p { font-size: 0.9375rem; color: var(--color-text-secondary); }
+
+    /* ------------------------------------------------------------- footer */
+    footer {
+      text-align: center; color: var(--color-text-muted); font-size: 0.85rem;
+      padding: var(--space-xl) 1.5rem var(--space-2xl);
+      border-top: 1px solid var(--color-border);
+    }
+    footer a { color: var(--color-calm); }
+    footer a:hover { text-decoration: underline; }
+    .footer-links { display: flex; gap: 1.25rem; justify-content: center; margin-bottom: var(--space-sm); flex-wrap: wrap; }
+    .disclaimer { max-width: 640px; margin: 0 auto var(--space-sm); }
+
+    @media (max-width: 860px) {
+      .hero-inner, .steps, .heat, .features, .honest { grid-template-columns: 1fr; }
+      .hero-inner { padding-top: var(--space-xl); }
+      section { padding: var(--space-xl) 1.5rem; }
+      nav { padding: 1rem 1.25rem; flex-direction: column; gap: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <span class="nav-wordmark"><span class="stop">Stop</span>Raging</span>
+    <span class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#map">The map</a>
+      <a href="#calm">Calm</a>
+      <a href="mailto:support@addictingapps.org">Contact</a>
+    </span>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <p class="eyebrow">Road rage, logged and let go</p>
+        <h1>That light is not long. It is <em>personal</em>.</h1>
+        <p class="lede">
+          Three minutes at the same intersection, third time this week, and there is nowhere to put that
+          feeling except the horn. StopRaging gives it somewhere else to go: one tap, the intersection is
+          recorded, and the app immediately asks you to breathe. The anger becomes a data point instead
+          of a lane change.
+        </p>
+        <p class="badge"><span class="dot"></span> <strong>In development</strong> · iPhone, iOS 17+ · CarPlay</p>
+      </div>
+      <div class="figure">
+        <div class="rage-button">Log&nbsp;rage</div>
+        <p class="caption">One button. No typing, no forms, no photograph of the light.</p>
+      </div>
+    </div>
+  </header>
+
+  <section id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Tap, breathe, drive</h2>
+        <p>The entire interaction is designed to be over before the light changes.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <p class="n">1</p>
+          <h3>One tap</h3>
+          <p>Your location is captured, the intersection is identified, and the event is stamped with the time and the part of day. A haptic confirms it. That is the whole input.</p>
+        </div>
+        <div class="step">
+          <p class="n">2</p>
+          <h3>A five-minute cooldown</h3>
+          <p>Log the same intersection twice inside five minutes and the app declines, politely. Rage-tapping a counter is not catharsis, and it would poison the map for everyone else.</p>
+        </div>
+        <div class="step">
+          <p class="n">3</p>
+          <h3>Then it changes the subject</h3>
+          <p>The screen turns from red to deep blue and a circle starts breathing at four seconds in, four seconds out. You are welcome to ignore it. Most people do not.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="map" class="band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Proof that it is not just you</h2>
+        <p>
+          Every logged event joins a shared map. Intersections that grind people down show up hotter than
+          the ones that do not — and suddenly the light you have been swearing at alone has forty other
+          witnesses.
+        </p>
+      </div>
+      <div class="heat">
+        <div>
+          <div class="heat-key">
+            <div><i class="low"></i> A few reports — probably a bad morning</div>
+            <div><i class="mid"></i> A regular offender</div>
+            <div><i class="high"></i> Everybody hates this one</div>
+          </div>
+          <p style="margin-top: var(--space-md); color: var(--color-text-secondary); font-size: 0.9375rem;">
+            Pins cluster as you zoom out and intensify with volume. Tap one and the intersection opens
+            with its total and a breakdown by time of day.
+          </p>
+        </div>
+        <div>
+          <p style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 0.5rem;">Intersection detail</p>
+          <div class="buckets">
+            <div><p class="t">Morning</p><p class="v">—</p></div>
+            <div><p class="t">Afternoon</p><p class="v">—</p></div>
+            <div><p class="t">Evening</p><p class="v">—</p></div>
+            <div><p class="t">Night</p><p class="v">—</p></div>
+          </div>
+          <p style="margin-top: var(--space-sm); color: var(--color-text-muted); font-size: 0.875rem;">
+            Counts fill in from real reports. The evening column is usually the one that tells the story.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="calm" class="band-calm">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>The part that actually helps</h2>
+        <p>Logging is the hook. The breath afterwards is the point.</p>
+      </div>
+      <div class="features">
+        <div class="feature">
+          <h3>A breathing circle, not a lecture</h3>
+          <p>Deep blue, one expanding circle, a four-second cycle. No streaks, no score, nothing to fail at.</p>
+        </div>
+        <div class="feature">
+          <h3>CarPlay, hands where they belong</h3>
+          <p>Log from the car display and get the same breathing prompt on the dashboard, so the phone stays in the cupholder.</p>
+        </div>
+        <div class="feature">
+          <h3>It works with no signal</h3>
+          <p>Events queue on the device and sync when you are back on the network. A tunnel does not lose your tap.</p>
+        </div>
+        <div class="feature">
+          <h3>Your history is yours</h3>
+          <p>Your own logs in one list, and an account you can delete outright from Settings — with the app telling you plainly what deletion removes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <h2>The fine print, up front</h2>
+        <p>An app about anger while driving has to be careful about what it encourages.</p>
+      </div>
+      <div class="honest">
+        <div>
+          <h3>Not while moving</h3>
+          <p>StopRaging is for a car that is stopped. Nothing in it needs your attention at speed, and CarPlay exists precisely so the phone stays down.</p>
+        </div>
+        <div>
+          <h3>Not a traffic authority</h3>
+          <p>The map shows where people felt frustrated, not where signals are mistimed. It is a record of feelings, and it is honest about being one.</p>
+        </div>
+        <div>
+          <h3>Not therapy</h3>
+          <p>A breathing exercise is a small tool for a small moment. If anger behind the wheel is a pattern for you, this app is not the answer to it.</p>
+        </div>
+        <div>
+          <h3>Coarse locations only</h3>
+          <p>Events attach to an intersection, not to you. There is no trip history, no route, and no public profile.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="mailto:support@addictingapps.org">Contact</a>
+      <a href="/">Addicting Apps</a>
+    </div>
+    <p class="disclaimer">
+      Do not interact with your phone while driving. StopRaging is intended for use when your vehicle is
+      stopped, or through CarPlay.
+    </p>
+    <p>© 2026 Addicting Apps · <a href="https://www.addictingapps.org">addictingapps.org</a></p>
+  </footer>
+</body>
+</html>

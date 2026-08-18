@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SatStack — How close are you to a whole coin?</title>
+  <meta name="description" content="A Bitcoin savings goal tracker. Pull your balance from a watch-only address or a read-only Kraken key, or type it yourself, and watch one number: how much of your goal you have stacked. Home Screen widget, no account.">
+  <meta property="og:title" content="SatStack">
+  <meta property="og:description" content="One number that matters: how close you are to your Bitcoin goal.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-ui);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ---------------------------------------------------------------- nav */
+    nav {
+      background: rgba(15,15,20,0.9); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--color-border);
+      padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 20;
+    }
+    .nav-wordmark { font-family: var(--font-display); font-size: 1.0625rem; font-weight: 700; letter-spacing: -0.01em; }
+    .nav-wordmark span { color: var(--color-orange); }
+    .nav-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .nav-links a { font-size: 0.875rem; color: var(--color-text-secondary); transition: color .2s; }
+    .nav-links a:hover { color: var(--color-text); }
+
+    /* --------------------------------------------------------------- hero */
+    .hero {
+      background: radial-gradient(80% 65% at 50% -5%, rgba(255,153,38,0.16), transparent 65%);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .hero-inner {
+      max-width: var(--maxw); margin: 0 auto;
+      padding: var(--space-2xl) 1.5rem var(--space-xl);
+      display: grid; grid-template-columns: 1.1fr 0.9fr; gap: var(--space-xl);
+      align-items: center;
+    }
+    .eyebrow {
+      font-family: var(--font-mono); font-size: var(--text-label);
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--color-orange); margin-bottom: var(--space-sm);
+    }
+    h1 {
+      font-family: var(--font-display); font-size: var(--text-hero);
+      font-weight: 700; line-height: 1.04; letter-spacing: -0.025em;
+      margin-bottom: var(--space-md);
+    }
+    .lede { font-size: var(--text-body-lg); color: var(--color-text-secondary); margin-bottom: var(--space-lg); }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: 999px; padding: 0.6rem 1.1rem;
+      font-size: 0.9rem; color: var(--color-text-secondary);
+    }
+    .badge strong { color: var(--color-text); font-weight: 600; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-orange); box-shadow: 0 0 12px var(--color-orange); }
+
+    /* ---------------------------------------------------------- ring card */
+    .ringcard {
+      background: linear-gradient(160deg, var(--color-surface-hi), var(--color-surface));
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg); padding: var(--space-lg);
+      box-shadow: var(--shadow); text-align: center;
+      max-width: 340px; margin: 0 auto;
+    }
+    .ring {
+      width: 200px; height: 200px; margin: 0 auto var(--space-md);
+      border-radius: 50%; display: grid; place-items: center;
+      background:
+        conic-gradient(var(--color-orange) 0deg 234deg, rgba(255,255,255,0.07) 234deg 360deg);
+      position: relative;
+    }
+    .ring::after {
+      content: ''; position: absolute; inset: 14px; border-radius: 50%;
+      background: var(--color-surface);
+    }
+    .ring .inner { position: relative; z-index: 1; }
+    .ring .pct { font-family: var(--font-display); font-size: 2.5rem; font-weight: 700; line-height: 1; }
+    .ring .lbl { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--color-text-secondary); margin-top: 6px; }
+    .ringcard .amount { font-family: var(--font-mono); font-size: 1.125rem; font-weight: 600; color: var(--color-amber); }
+    .ringcard .goal { font-size: 0.875rem; color: var(--color-text-muted); }
+    .ringcard .greet { font-family: var(--font-display); font-size: 0.95rem; color: var(--color-text-secondary); margin-top: var(--space-md); }
+
+    /* ----------------------------------------------------------- sections */
+    section { padding: var(--space-2xl) 1.5rem; }
+    .wrap { max-width: var(--maxw); margin: 0 auto; }
+    .section-head { max-width: 660px; margin-bottom: var(--space-xl); }
+    h2 {
+      font-family: var(--font-display); font-size: var(--text-display-lg);
+      font-weight: 700; letter-spacing: -0.02em; margin-bottom: var(--space-sm); line-height: 1.15;
+    }
+    .section-head p { color: var(--color-text-secondary); font-size: var(--text-body-lg); }
+    .band { background: var(--color-bg-raised); border-block: 1px solid var(--color-border); }
+
+    /* ------------------------------------------------------------ sources */
+    .sources { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+    .source {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius); padding: var(--space-lg);
+    }
+    .source .k { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--color-orange); }
+    .source h3 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; margin: 6px 0; }
+    .source p { font-size: 0.9375rem; color: var(--color-text-secondary); }
+    .source .safe {
+      margin-top: var(--space-sm); padding-top: var(--space-sm);
+      border-top: 1px solid var(--color-border);
+      font-size: 0.8125rem; color: var(--color-success);
+    }
+
+    /* ----------------------------------------------------------- features */
+    .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
+    .feature { border-left: 2px solid var(--color-orange); padding-left: var(--space-md); }
+    .feature h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin-bottom: 4px; }
+    .feature p { font-size: 0.9375rem; color: var(--color-text-secondary); }
+
+    /* ------------------------------------------------------------ honesty */
+    .honest { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
+    .honest div {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius); padding: var(--space-md) var(--space-lg);
+    }
+    .honest h3 { font-size: 1rem; font-weight: 600; color: var(--color-amber); margin-bottom: 4px; }
+    .honest p { font-size: 0.9375rem; color: var(--color-text-secondary); }
+
+    /* ------------------------------------------------------------- footer */
+    footer {
+      text-align: center; color: var(--color-text-muted); font-size: 0.85rem;
+      padding: var(--space-xl) 1.5rem var(--space-2xl);
+      border-top: 1px solid var(--color-border);
+    }
+    footer a { color: var(--color-orange); }
+    footer a:hover { text-decoration: underline; }
+    .footer-links { display: flex; gap: 1.25rem; justify-content: center; margin-bottom: var(--space-sm); flex-wrap: wrap; }
+    .disclaimer { max-width: 660px; margin: 0 auto var(--space-sm); }
+
+    @media (max-width: 860px) {
+      .hero-inner, .sources, .features, .honest { grid-template-columns: 1fr; }
+      .hero-inner { padding-top: var(--space-xl); }
+      section { padding: var(--space-xl) 1.5rem; }
+      nav { padding: 1rem 1.25rem; flex-direction: column; gap: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <span class="nav-wordmark">Sat<span>Stack</span></span>
+    <span class="nav-links">
+      <a href="#sources">Sources</a>
+      <a href="#widget">Widget</a>
+      <a href="#limits">Limits</a>
+      <a href="mailto:support@addictingapps.org">Contact</a>
+    </span>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <p class="eyebrow">Bitcoin savings goal tracker</p>
+        <h1>One number. How close are you?</h1>
+        <p class="lede">
+          Portfolio apps want to show you fourteen tokens, a candlestick chart, and a news feed. If you
+          are stacking toward a whole coin, none of that is the question. The question is what fraction
+          of the way there you are this morning — so SatStack shows you that, in a ring, and then gets
+          out of the way.
+        </p>
+        <p class="badge"><span class="dot"></span> <strong>In development</strong> · iPhone &amp; iPad, iOS 17+</p>
+      </div>
+      <div class="ringcard">
+        <div class="ring">
+          <div class="inner">
+            <p class="pct">65%</p>
+            <p class="lbl">of goal</p>
+          </div>
+        </div>
+        <p class="amount">0.65000000 BTC</p>
+        <p class="goal">of a 1.00000000 BTC goal</p>
+        <p class="greet">"Tick tock, next block."</p>
+      </div>
+    </div>
+  </header>
+
+  <section id="sources">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Three ways in, none of them risky</h2>
+        <p>
+          SatStack never needs the ability to move a satoshi. Every source it supports is read-only by
+          construction, and you can mix them.
+        </p>
+      </div>
+      <div class="sources">
+        <div class="source">
+          <p class="k">Watch-only</p>
+          <h3>A Bitcoin address</h3>
+          <p>Paste an address and the balance is read from the public chain through Blockstream's API. No key, no seed, no signing capability — the same information a block explorer would show anyone.</p>
+          <p class="safe">Public data only</p>
+        </div>
+        <div class="source">
+          <p class="k">Exchange</p>
+          <h3>A Kraken API key</h3>
+          <p>Create a key with query-balance permission and nothing else. SatStack signs one request to read your balance; it cannot trade, withdraw, or transfer.</p>
+          <p class="safe">Stored in the iOS Keychain, never sent anywhere else</p>
+        </div>
+        <div class="source">
+          <p class="k">Offline</p>
+          <h3>Type it yourself</h3>
+          <p>Cold storage you would rather not name anywhere? Enter the number by hand. The goal ring works exactly the same.</p>
+          <p class="safe">Nothing leaves the device</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="widget" class="band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>The small things it gets right</h2>
+      </div>
+      <div class="features">
+        <div class="feature">
+          <h3>Home Screen widget</h3>
+          <p>Small and medium widgets with your stack and your progress, refreshed in the background so the number is current when you glance at it.</p>
+        </div>
+        <div class="feature">
+          <h3>Tap to switch units</h3>
+          <p>BTC or your fiat value, toggled from the widget itself without opening the app. Some days you want to see coins; some days you do not.</p>
+        </div>
+        <div class="feature">
+          <h3>Set the goal that suits you</h3>
+          <p>A whole coin by default, or any target you choose, with presets for the usual milestones.</p>
+        </div>
+        <div class="feature">
+          <h3>Light, dark, or whatever the system says</h3>
+          <p>A proper light theme, not a dimmed dark one, and an appearance setting that stays where you put it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="limits">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What SatStack will not do</h2>
+        <p>Everything below is a deliberate omission, not a missing feature.</p>
+      </div>
+      <div class="honest">
+        <div>
+          <h3>It cannot move your money</h3>
+          <p>No sending, no swapping, no trading, no withdrawals. It holds no private keys, and the only exchange permission it asks for is the one that reads a balance.</p>
+        </div>
+        <div>
+          <h3>It is not financial advice</h3>
+          <p>No price predictions, no signals, no "buy" prompts. It shows your balance against a goal you set, and a price so the fiat figure means something.</p>
+        </div>
+        <div>
+          <h3>It is not a portfolio tracker</h3>
+          <p>One asset, on purpose. No altcoins, no cost basis, no tax lots, no profit and loss.</p>
+        </div>
+        <div>
+          <h3>Balances are as fresh as the source</h3>
+          <p>Chain and exchange data are fetched when the app refreshes and cached for the widget. Treat the widget as a glance, not a settlement.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="mailto:support@addictingapps.org">Contact</a>
+      <a href="/">Addicting Apps</a>
+    </div>
+    <p class="disclaimer">
+      Figures shown on this page are illustrative. SatStack is not investment advice and is not
+      affiliated with Kraken, Blockstream, or CoinGecko; those services are used only to read public
+      price data and balances you have chosen to connect.
+    </p>
+    <p>© 2026 Addicting Apps · <a href="https://www.addictingapps.org">addictingapps.org</a></p>
+  </footer>
+</body>
+</html>

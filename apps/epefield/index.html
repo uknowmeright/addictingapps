@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EPE Field — Dental X-ray equipment performance evaluations</title>
+  <meta name="description" content="A field workspace for dental X-ray equipment performance evaluations: facility and unit inventory, jurisdiction-aware due dates, calibration-aware instrument tracking, guided observations, and locked, shareable PDF reports. iPhone and iPad, on-device.">
+  <meta property="og:title" content="EPE Field">
+  <meta property="og:description" content="Know what is due before you arrive. Leave with a locked, signed report.">
+  <meta property="og:image" content="screenshots/01.png">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-ui);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ---------------------------------------------------------------- nav */
+    nav {
+      background: var(--color-bg-deeper);
+      padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 20;
+    }
+    .nav-wordmark {
+      font-family: var(--font-display); font-size: 1rem; font-weight: 700;
+      letter-spacing: 3px; color: var(--color-teal-bright);
+    }
+    .nav-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .nav-links a { font-size: 0.875rem; color: rgba(238,246,247,0.75); transition: color .2s; }
+    .nav-links a:hover { color: #fff; }
+
+    /* --------------------------------------------------------------- hero */
+    .hero {
+      background: linear-gradient(155deg, var(--color-bg-deep), var(--color-bg-deeper) 70%);
+      color: var(--color-text-invert);
+    }
+    .hero-inner {
+      max-width: var(--maxw); margin: 0 auto;
+      padding: var(--space-2xl) 1.5rem var(--space-xl);
+      display: grid; grid-template-columns: 1.05fr 1fr; gap: var(--space-xl);
+      align-items: center;
+    }
+    .eyebrow {
+      font-family: var(--font-mono); font-size: var(--text-label);
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--color-teal-bright); margin-bottom: var(--space-sm);
+    }
+    h1 {
+      font-family: var(--font-display); font-size: var(--text-hero);
+      font-weight: 700; line-height: 1.06; letter-spacing: -0.02em;
+      margin-bottom: var(--space-md);
+    }
+    .hero .lede { font-size: var(--text-body-lg); color: rgba(238,246,247,0.82); margin-bottom: var(--space-lg); }
+    .hero-shot img {
+      border-radius: 30px; box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(255,255,255,0.12); margin: 0 auto; max-width: 320px;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 999px; padding: 0.6rem 1.1rem;
+      font-size: 0.9rem; color: rgba(238,246,247,0.82);
+    }
+    .badge strong { color: #fff; font-weight: 600; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-teal-bright); }
+
+    /* --------------------------------------------------------- statusbar */
+    .statusbar {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      max-width: var(--maxw); margin: 0 auto;
+      border-top: 1px solid rgba(255,255,255,0.12);
+    }
+    .statusbar div { padding: var(--space-md) 1.5rem; }
+    .statusbar div + div { border-left: 1px solid rgba(255,255,255,0.12); }
+    .statusbar .n { font-family: var(--font-display); font-size: 1.75rem; font-weight: 700; line-height: 1.1; }
+    .statusbar .l { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(238,246,247,0.6); }
+    .statusbar .overdue .n { color: #ff8a8f; }
+    .statusbar .soon .n { color: var(--color-amber-bright); }
+    .statusbar .current .n { color: #5fe0a8; }
+
+    /* ----------------------------------------------------------- sections */
+    section { padding: var(--space-2xl) 1.5rem; }
+    .wrap { max-width: var(--maxw); margin: 0 auto; }
+    .section-head { max-width: 660px; margin-bottom: var(--space-xl); }
+    h2 {
+      font-family: var(--font-display); font-size: var(--text-display-lg);
+      font-weight: 700; letter-spacing: -0.015em; color: var(--color-ink);
+      margin-bottom: var(--space-sm); line-height: 1.18;
+    }
+    .section-head p { color: var(--color-text-secondary); font-size: var(--text-body-lg); }
+    .band { background: var(--color-surface); border-block: 1px solid var(--color-border); }
+
+    /* -------------------------------------------------------------- steps */
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-lg); }
+    .step-num {
+      font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 1px;
+      color: var(--color-teal); border-bottom: 2px solid var(--color-teal);
+      display: inline-block; padding-bottom: 4px; margin-bottom: var(--space-sm);
+    }
+    .step h3 { font-family: var(--font-display); font-size: var(--text-display-md); font-weight: 600; margin-bottom: 6px; }
+    .step p { color: var(--color-text-secondary); font-size: 0.9375rem; }
+
+    /* ------------------------------------------------------------ gallery */
+    .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+    .shot img {
+      border-radius: 22px; border: 1px solid var(--color-border);
+      box-shadow: var(--shadow); margin-bottom: var(--space-sm);
+    }
+    .shot h3 { font-family: var(--font-display); font-size: 1.125rem; font-weight: 600; margin-bottom: 4px; }
+    .shot p { font-size: 0.9375rem; color: var(--color-text-secondary); }
+
+    /* ----------------------------------------------------------- features */
+    .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
+    .feature {
+      background: var(--color-bg); border: 1px solid var(--color-border);
+      border-left: 3px solid var(--color-teal);
+      border-radius: var(--radius); padding: var(--space-md) var(--space-lg);
+    }
+    .band .feature { background: var(--color-surface-sunken); }
+    .feature h3 { font-family: var(--font-display); font-size: 1.125rem; font-weight: 600; margin-bottom: 4px; }
+    .feature p { font-size: 0.9375rem; color: var(--color-text-secondary); }
+
+    /* --------------------------------------------------------- guardrails */
+    .rails { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
+    .rail {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius); padding: var(--space-md) var(--space-lg);
+    }
+    .rail .tag {
+      font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--color-amber); display: block; margin-bottom: 6px;
+    }
+    .rail.stop .tag { color: var(--color-alert); }
+    .rail h3 { font-family: var(--font-display); font-size: 1.0625rem; font-weight: 600; margin-bottom: 4px; }
+    .rail p { font-size: 0.9375rem; color: var(--color-text-secondary); }
+
+    /* --------------------------------------------------------- regulatory */
+    .regbox {
+      background: var(--color-bg-deeper); color: var(--color-text-invert);
+      border-radius: var(--radius-lg); padding: var(--space-lg);
+      border-left: 4px solid var(--color-amber-bright);
+    }
+    .regbox h2 { color: var(--color-amber-bright); font-size: var(--text-display-md); }
+    .regbox p { color: rgba(238,246,247,0.82); max-width: 68ch; }
+    .regbox p + p { margin-top: var(--space-sm); }
+
+    /* ------------------------------------------------------------- footer */
+    footer {
+      text-align: center; color: var(--color-text-muted); font-size: 0.85rem;
+      padding: var(--space-xl) 1.5rem var(--space-2xl);
+      border-top: 1px solid var(--color-border);
+    }
+    footer a { color: var(--color-teal); }
+    footer a:hover { text-decoration: underline; }
+    .footer-links { display: flex; gap: 1.25rem; justify-content: center; margin-bottom: var(--space-sm); flex-wrap: wrap; }
+    .disclaimer { max-width: 640px; margin: 0 auto var(--space-sm); }
+
+    @media (max-width: 900px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 860px) {
+      .hero-inner { grid-template-columns: 1fr; padding-top: var(--space-xl); }
+      .hero-shot { order: -1; }
+      .steps, .gallery, .features, .rails { grid-template-columns: 1fr; }
+      .statusbar div + div { border-left: none; border-top: 1px solid rgba(255,255,255,0.12); }
+      .statusbar { grid-template-columns: 1fr; }
+      section { padding: var(--space-xl) 1.5rem; }
+      nav { padding: 1rem 1.25rem; flex-direction: column; gap: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <span class="nav-wordmark">EPE FIELD</span>
+    <span class="nav-links">
+      <a href="#workflow">Workflow</a>
+      <a href="#guardrails">Guardrails</a>
+      <a href="#scope">Scope</a>
+      <a href="privacy.html">Privacy</a>
+    </span>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <p class="eyebrow">Dental X-ray EPE workflow</p>
+        <h1>Know what is due before you arrive.</h1>
+        <p class="lede">
+          An equipment performance evaluation is a day of measurements and a lifetime of paperwork.
+          EPE Field keeps the facilities, the units, the due dates, the instrument you measured with,
+          and the numbers you wrote down in one place — then locks the record when you sign it.
+        </p>
+        <p class="badge"><span class="dot"></span> <strong>Coming soon</strong> to the App Store · iPhone &amp; iPad</p>
+      </div>
+      <div class="hero-shot">
+        <img src="screenshots/01.png" alt="EPE Field overview screen: zero overdue, two due soon, one current, with a Needs attention list of X-ray units." width="414" height="900">
+      </div>
+    </div>
+    <div class="statusbar">
+      <div class="overdue"><p class="n">0</p><p class="l">Overdue</p></div>
+      <div class="soon"><p class="n">2</p><p class="l">Due soon</p></div>
+      <div class="current"><p class="n">1</p><p class="l">Current</p></div>
+    </div>
+  </header>
+
+  <section id="workflow">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Plan the visit, work it, close it</h2>
+        <p>
+          The same four movements every time, so nothing depends on remembering which notebook a
+          measurement went into.
+        </p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <p class="step-num">01 / PLAN</p>
+          <h3>See what is due</h3>
+          <p>Facilities, rooms, and X-ray units with jurisdiction-aware due dates and the policy source behind each one. Texas is fully mapped; Virginia and Colorado ship as starter references.</p>
+        </div>
+        <div class="step">
+          <p class="step-num">02 / MEASURE</p>
+          <h3>Record observations</h3>
+          <p>Timer, kVp, reproducibility, collimation, entrance exposure, tube stability, and the exposure switch — guided, in order, with the instrument you actually used attached.</p>
+        </div>
+        <div class="step">
+          <p class="step-num">03 / REVIEW</p>
+          <h3>Check readiness</h3>
+          <p>A readiness checklist refuses to hand you a signature page until identity, instrument, and observations are all present.</p>
+        </div>
+        <div class="step">
+          <p class="step-num">04 / SIGN</p>
+          <h3>Lock and share</h3>
+          <p>Inspector attestation, irreversible finalization, snapshots of the facility, unit, measurements, policy, and certificate, and a PDF with a SHA-256 fingerprint.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Everything the report has to survive</h2>
+        <p>An audit does not care what you remember. It cares what the record says and whether it changed.</p>
+      </div>
+      <div class="gallery">
+        <div class="shot">
+          <img src="screenshots/03.png" alt="Inspections list filtered by All, Draft, Review, and Final, showing two inspections in progress." width="414" height="900" loading="lazy">
+          <h3>Drafts that stay drafts</h3>
+          <p>Draft, ready for review, and final are distinct states. Nothing quietly becomes an official record.</p>
+        </div>
+        <div class="shot">
+          <img src="screenshots/04.png" alt="Instruments list with calibration due dates and Current and Due soon status chips, plus a calibration attention banner." width="414" height="900" loading="lazy">
+          <h3>Calibration-aware instruments</h3>
+          <p>Your meters with their certificates, calibration dates, and current, due-soon, expired, or retired status.</p>
+        </div>
+        <div class="shot">
+          <img src="screenshots/02.png" alt="Facilities list with two dental practices, their cities, and the number of registered X-ray units at each." width="414" height="900" loading="lazy">
+          <h3>Facilities and units</h3>
+          <p>Practices, rooms, and equipment identity kept together — and correctable later without orphaning the inspections attached to them.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="guardrails">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Guardrails, not suggestions</h2>
+        <p>The app's opinions are the ones that keep a record defensible. It enforces them rather than warning you.</p>
+      </div>
+      <div class="rails">
+        <div class="rail stop">
+          <span class="tag">Blocks finalization</span>
+          <h3>Expired or retired instrument</h3>
+          <p>If the meter you selected was out of calibration on the day, the inspection cannot be signed. The certificate details are preserved inside the finalized record.</p>
+        </div>
+        <div class="rail stop">
+          <span class="tag">Blocks finalization</span>
+          <h3>Incomplete readiness</h3>
+          <p>Identity, instrument, and recorded observations are all required before the attestation screen will open.</p>
+        </div>
+        <div class="rail">
+          <span class="tag">Locks on sign</span>
+          <h3>Snapshots, not references</h3>
+          <p>Finalizing captures the facility, unit, measurements, policy, and calibration as they stood. Later corrections cannot rewrite a signed report.</p>
+        </div>
+        <div class="rail">
+          <span class="tag">No PHI</span>
+          <h3>Evidence photos, with a boundary</h3>
+          <p>Attach photographs of equipment and readings. The app reminds you, explicitly, that patient information does not belong in them.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Field details that matter</h2>
+      </div>
+      <div class="features">
+        <div class="feature">
+          <h3>Bulk instrument import</h3>
+          <p>CSV import matched on serial number, updating duplicates in place and warning on partial rows, with attached certificates preserved.</p>
+        </div>
+        <div class="feature">
+          <h3>Certificates on the device</h3>
+          <p>Calibration certificate PDFs stored securely on device, up to 20 MB each, available when the practice has no signal.</p>
+        </div>
+        <div class="feature">
+          <h3>Calibration reminders</h3>
+          <p>Optional local notifications at thirty days, seven days, and the due date. Nothing leaves the phone to make them work.</p>
+        </div>
+        <div class="feature">
+          <h3>Accessible on site</h3>
+          <p>Dynamic Type reflow, VoiceOver labels, and an adaptive light and dark status palette for operatories with the lights down.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="scope">
+    <div class="wrap">
+      <div class="regbox">
+        <h2>Where this app stops</h2>
+        <p>
+          EPE Field is a workflow tool, not a certification authority. It does not determine regulatory
+          pass or fail status, authorize inspectors, or replace qualified professional judgement. Every
+          pass/fail decision remains with the authorized professional who signed the report.
+        </p>
+        <p>
+          The jurisdiction due-date references shipped with the app must be reviewed by a qualified
+          inspector against the current rule before production use. The app shows you the source behind
+          each due date precisely so that review is possible.
+        </p>
+        <p>
+          Workspace data is stored on the device. There is no account, no server of ours, and no patient
+          data anywhere in the app.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="privacy.html">Privacy</a>
+      <a href="mailto:support@addictingapps.org">Contact</a>
+      <a href="/">Addicting Apps</a>
+    </div>
+    <p class="disclaimer">
+      Screenshots show sample data. Facility, practice, and equipment names shown are fictional. Product
+      names of X-ray units and survey meters belong to their manufacturers; EPE Field is not affiliated
+      with or endorsed by any of them.
+    </p>
+    <p>© 2026 Addicting Apps · <a href="https://www.addictingapps.org">addictingapps.org</a></p>
+  </footer>
+</body>
+</html>

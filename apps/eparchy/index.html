@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eparchy — Eastern Catholic Finder</title>
+  <meta name="description" content="An independent directory of Eastern Catholic parishes, missions, monasteries, and hosted communities, with sourced recurring liturgy times, visible verification dates, offline saved locations, and reminders in the venue's own time zone.">
+  <meta property="og:title" content="Eparchy — Eastern Catholic Finder">
+  <meta property="og:description" content="Every tradition. One clear map.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-ui);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ---------------------------------------------------------------- nav */
+    nav {
+      background: var(--color-bg-deep);
+      padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 20;
+    }
+    .nav-wordmark {
+      font-family: var(--font-display); font-size: 1.0625rem; font-weight: 600;
+      letter-spacing: 4px; color: var(--color-gold);
+    }
+    .nav-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .nav-links a { font-size: 0.875rem; color: rgba(245,240,230,0.78); transition: color .2s; }
+    .nav-links a:hover { color: #fff; }
+
+    /* --------------------------------------------------------------- hero */
+    .hero {
+      background: linear-gradient(160deg, var(--color-bg-deep), var(--color-bg-deeper));
+      color: var(--color-text-invert);
+      position: relative; overflow: hidden;
+    }
+    /* candle-light rays behind the headline */
+    .hero::before {
+      content: ''; position: absolute; inset: -30% -10% auto -10%; height: 140%;
+      background:
+        radial-gradient(45% 40% at 50% 0%, rgba(239,184,92,0.22), transparent 70%),
+        conic-gradient(from 200deg at 50% 0%,
+          transparent 0deg, rgba(239,184,92,0.10) 12deg, transparent 24deg,
+          transparent 46deg, rgba(239,184,92,0.10) 58deg, transparent 70deg,
+          transparent 92deg, rgba(239,184,92,0.10) 104deg, transparent 116deg);
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative;
+      max-width: 820px; margin: 0 auto; text-align: center;
+      padding: var(--space-2xl) 1.5rem var(--space-xl);
+    }
+    .eyebrow {
+      font-size: var(--text-label); letter-spacing: 3px; text-transform: uppercase;
+      color: var(--color-gold); font-weight: 600; margin-bottom: var(--space-md);
+    }
+    h1 {
+      font-family: var(--font-display); font-size: var(--text-hero);
+      font-weight: 500; line-height: 1.1; margin-bottom: var(--space-md);
+    }
+    .tagline {
+      font-family: var(--font-display); font-style: italic;
+      font-size: var(--text-body-lg); color: var(--color-gold); margin-bottom: var(--space-md);
+    }
+    .hero .lede {
+      font-size: var(--text-body-lg); color: rgba(245,240,230,0.84);
+      max-width: 62ch; margin: 0 auto var(--space-lg);
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 999px; padding: 0.6rem 1.1rem;
+      font-size: 0.9rem; color: rgba(245,240,230,0.85);
+    }
+    .badge strong { color: #fff; font-weight: 600; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-gold); }
+
+    /* ----------------------------------------------------------- sections */
+    section { padding: var(--space-2xl) 1.5rem; }
+    .wrap { max-width: var(--maxw); margin: 0 auto; }
+    .section-head { max-width: 660px; margin-bottom: var(--space-xl); }
+    h2 {
+      font-family: var(--font-display); font-size: var(--text-display-lg);
+      font-weight: 500; color: var(--color-jade-deep);
+      margin-bottom: var(--space-sm); line-height: 1.2;
+    }
+    .section-head p { color: var(--color-text-secondary); font-size: var(--text-body-lg); }
+    .band { background: var(--color-surface); border-block: 1px solid var(--color-border); }
+    .band-jade {
+      background: linear-gradient(150deg, var(--color-bg-deep), var(--color-bg-deeper));
+      color: var(--color-text-invert);
+    }
+    .band-jade h2 { color: var(--color-gold); }
+    .band-jade .section-head p { color: rgba(245,240,230,0.82); }
+
+    /* ------------------------------------------------------- listing card */
+    .listing {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg); box-shadow: var(--shadow);
+      padding: var(--space-lg); max-width: 460px;
+    }
+    .listing .native { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; color: var(--color-jade-deep); }
+    .listing .english { color: var(--color-text-muted); font-size: 0.9375rem; margin-bottom: var(--space-sm); }
+    .listing .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: var(--space-md); }
+    .listing .chips span {
+      font-size: 0.8125rem; border-radius: 999px; padding: 0.25rem 0.7rem;
+      background: var(--color-surface-sunken); color: var(--color-text-secondary);
+      border: 1px solid var(--color-border);
+    }
+    .listing .chips .tradition { background: rgba(23,107,98,0.10); color: var(--color-jade); border-color: rgba(23,107,98,0.25); }
+    .listing .service {
+      display: flex; justify-content: space-between; gap: 1rem;
+      padding: 0.5rem 0; border-top: 1px solid var(--color-border);
+      font-size: 0.9375rem;
+    }
+    .listing .service strong { font-weight: 500; }
+    .listing .service span { color: var(--color-text-muted); white-space: nowrap; }
+    .listing .status {
+      margin-top: var(--space-md); font-size: 0.8125rem; color: var(--color-jade);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .listing .status::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--color-jade); flex: none; margin-top: 0.45em; align-self: flex-start; }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); align-items: center; }
+
+    /* ----------------------------------------------------------- features */
+    .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
+    .feature {
+      background: var(--color-bg); border: 1px solid var(--color-border);
+      border-radius: var(--radius); padding: var(--space-md) var(--space-lg);
+    }
+    .band .feature { background: var(--color-surface-sunken); }
+    .feature h3 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; color: var(--color-jade-deep); margin-bottom: 4px; }
+    .feature p { font-size: 0.9375rem; color: var(--color-text-secondary); }
+
+    /* ------------------------------------------------------------- trust */
+    .trust { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+    .trust div {
+      border-top: 3px solid var(--color-gold); padding-top: var(--space-md);
+    }
+    .trust div:nth-child(2) { border-top-color: var(--color-jade-light); }
+    .trust div:nth-child(3) { border-top-color: var(--color-clay); }
+    .trust h3 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; margin-bottom: 4px; }
+    .trust p { font-size: 0.9375rem; color: var(--color-text-secondary); }
+
+    /* ------------------------------------------------------------ honesty */
+    .honest { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
+    .honest div { border-left: 2px solid var(--color-gold); padding-left: var(--space-md); }
+    .honest h3 { font-size: 1rem; font-weight: 600; color: var(--color-gold); margin-bottom: 4px; }
+    .honest p { font-size: 0.9375rem; color: rgba(245,240,230,0.82); }
+
+    /* ------------------------------------------------------------ pricing */
+    .pricebox {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-top: 4px solid var(--color-gold);
+      border-radius: var(--radius-lg); padding: var(--space-lg);
+      max-width: 520px; box-shadow: var(--shadow);
+    }
+    .pricebox .amount { font-family: var(--font-display); font-size: 2.5rem; font-weight: 600; color: var(--color-jade-deep); }
+    .pricebox .note { color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: var(--space-md); }
+    .pricebox ul { list-style: none; }
+    .pricebox li { font-size: 0.9375rem; color: var(--color-text-secondary); padding-left: 1.4rem; position: relative; margin-bottom: 6px; }
+    .pricebox li::before { content: '·'; position: absolute; left: 0.5rem; color: var(--color-gold-deep); font-weight: 700; }
+
+    /* ------------------------------------------------------------- footer */
+    footer {
+      text-align: center; color: var(--color-text-muted); font-size: 0.85rem;
+      padding: var(--space-xl) 1.5rem var(--space-2xl);
+      border-top: 1px solid var(--color-border);
+    }
+    footer a { color: var(--color-jade); }
+    footer a:hover { text-decoration: underline; }
+    .footer-links { display: flex; gap: 1.25rem; justify-content: center; margin-bottom: var(--space-sm); flex-wrap: wrap; }
+    .disclaimer { max-width: 640px; margin: 0 auto var(--space-sm); }
+
+    @media (max-width: 860px) {
+      .split, .features, .trust, .honest { grid-template-columns: 1fr; }
+      section { padding: var(--space-xl) 1.5rem; }
+      nav { padding: 1rem 1.25rem; flex-direction: column; gap: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <span class="nav-wordmark">EPARCHY</span>
+    <span class="nav-links">
+      <a href="#listing">A listing</a>
+      <a href="#trust">Trust</a>
+      <a href="#price">Price</a>
+      <a href="mailto:support@addictingapps.org">Contact</a>
+    </span>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">Eastern Catholic Finder</p>
+      <h1>Find the liturgy, not just the building.</h1>
+      <p class="tagline">Every tradition. One clear map.</p>
+      <p class="lede">
+        You are travelling on Saturday and want a Divine Liturgy on Sunday. General church finders will
+        hand you a Latin parish, a dead phone number, and a schedule from 2019. Eparchy publishes a
+        listing only when someone has verified where it is, which church it belongs to, and when it
+        actually worships — and it shows you the source and the date.
+      </p>
+      <p class="badge"><span class="dot"></span> <strong>In development</strong> · iPhone &amp; iPad, iOS 17+</p>
+    </div>
+  </header>
+
+  <section id="listing">
+    <div class="wrap split">
+      <div>
+        <h2>What a listing has to earn</h2>
+        <p style="color: var(--color-text-secondary); font-size: var(--text-body-lg); margin-bottom: var(--space-md);">
+          Nothing is published without a verified physical location, an identified church and
+          jurisdiction, a correct entity type, at least one current recurring public liturgy, and a
+          source with a date on it.
+        </p>
+        <p style="color: var(--color-text-secondary);">
+          Where a fact is unknown, it stays unknown. The app will not infer a schedule, rename a service,
+          or flatten an Eastern tradition into Latin vocabulary to make a row look complete. A Holy
+          Qurbana is a Holy Qurbana; a Holy Qurbono is a Holy Qurbono.
+        </p>
+      </div>
+      <div class="listing">
+        <p class="native">Example listing</p>
+        <p class="english">Native name · English display name</p>
+        <div class="chips">
+          <span class="tradition">Church <em>sui iuris</em></span>
+          <span>Liturgical tradition</span>
+          <span>Eparchy</span>
+          <span>Mission</span>
+        </div>
+        <div class="service"><strong>Divine Liturgy · Sunday</strong> <span>venue-local time</span></div>
+        <div class="service"><strong>Language</strong> <span>where known</span></div>
+        <div class="service"><strong>Host venue</strong> <span>when it meets elsewhere</span></div>
+        <p class="status">Verified · with the date it was checked and the source it came from</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="trust" class="band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Three things the app always tells you</h2>
+        <p>A directory is only as good as its willingness to admit what it does not know.</p>
+      </div>
+      <div class="trust">
+        <div>
+          <h3>Verified</h3>
+          <p>Supported by a current official source or direct editorial review, with the date attached. A status label without a freshness date is not a status.</p>
+        </div>
+        <div>
+          <h3>Recently confirmed</h3>
+          <p>Someone standing there tapped "still accurate" and no conflicting report is outstanding. Confirmations raise confidence; they never overwrite official evidence.</p>
+        </div>
+        <div>
+          <h3>Needs review</h3>
+          <p>The source is ageing, unreachable, or contradicted. The listing says so rather than looking as authoritative as the rest.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Built for the way you actually look</h2>
+        <p>A map when you are somewhere new, a search field when you know what you want, and no account in either case.</p>
+      </div>
+      <div class="features">
+        <div class="feature">
+          <h3>Map and Search, kept apart</h3>
+          <p>A full-screen map with filters and "search this area", and a separate search page for city, address, church, tradition, and language. Both open the same detail view.</p>
+        </div>
+        <div class="feature">
+          <h3>No location permission demanded</h3>
+          <p>The map opens on a useful regional extent. It asks for your location only when you ask it to find you, and city search works fully if you say no.</p>
+        </div>
+        <div class="feature">
+          <h3>Reminders in the venue's time zone</h3>
+          <p>Scheduled against the church's own IANA time zone, so a daylight-saving change or a flight does not silently move your Sunday.</p>
+        </div>
+        <div class="feature">
+          <h3>Saved works offline</h3>
+          <p>Saved locations keep their last fetched details on the device, and tell you when they were last refreshed. No account, ever.</p>
+        </div>
+        <div class="feature">
+          <h3>Hosted communities, labelled</h3>
+          <p>A community meeting in a Latin church or a rented hall is shown as exactly that, with its host venue, so you never mistake the building for the parish.</p>
+        </div>
+        <div class="feature">
+          <h3>Accessible discovery</h3>
+          <p>Pins never rely on colour alone, and every nearby result reachable on the map is reachable in a list for VoiceOver.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band-jade">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Independent, and saying so</h2>
+        <p>The name sounds official. It is not, and the app repeats that wherever it could be misread.</p>
+      </div>
+      <div class="honest">
+        <div>
+          <h3>No affiliation</h3>
+          <p>Eparchy is not affiliated with or endorsed by any eparchy, exarchate, patriarchate, church <em>sui iuris</em>, parish, or the Holy See.</p>
+        </div>
+        <div>
+          <h3>Not exhaustive</h3>
+          <p>Coverage grows in deliberate waves, starting with the United States and Canada. A quiet region means no verified listing yet, not no community.</p>
+        </div>
+        <div>
+          <h3>Not a prayer app</h3>
+          <p>No calendar, no propers, no social feed. It finds communities and their recurring public liturgies, and stops there.</p>
+        </div>
+        <div>
+          <h3>Corrections are evidence</h3>
+          <p>"Suggest a correction" opens a review with your note and source. It never edits a live listing on its own, and contradictions become review items rather than silent overwrites.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="price">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Paid once, then left alone</h2>
+        <p>A directory funded by the people using it has no reason to sell them anything else.</p>
+      </div>
+      <div class="pricebox">
+        <p class="amount">$2.99</p>
+        <p class="note">One-time purchase</p>
+        <ul>
+          <li>No subscription and no in-app purchases</li>
+          <li>No advertisements</li>
+          <li>No account and no sign-in</li>
+          <li>Worldwide search from day one</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="mailto:support@addictingapps.org">Contact</a>
+      <a href="/">Addicting Apps</a>
+    </div>
+    <p class="disclaimer">
+      Eparchy is an independent directory. It is not affiliated with or endorsed by any eparchy,
+      exarchate, patriarchate, church <em>sui iuris</em>, parish, or the Holy See. The example listing on
+      this page is illustrative and describes the fields a real listing carries.
+    </p>
+    <p>© 2026 Addicting Apps · <a href="https://www.addictingapps.org">addictingapps.org</a></p>
+  </footer>
+</body>
+</html>

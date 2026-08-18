@@ -1,0 +1,52 @@
+/* Miner Monitor — rack-room dark, bitcoin orange, terminal-green "live". */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* Surfaces */
+  --color-bg:             #0b0d11;
+  --color-bg-raised:      #12151b;
+  --color-surface:        #171b23;
+  --color-surface-hi:     #1e232d;
+  --color-border:         #262c38;
+  --color-border-hot:     rgba(247, 147, 26, 0.35);
+
+  /* Brand */
+  --color-orange:         #f7931a;
+  --color-orange-soft:    #ffb457;
+  --color-live:           #22c55e;
+  --color-stale:          #eab308;
+  --color-offline:        #ef4444;
+
+  /* Text */
+  --color-text:           #e8ecf2;
+  --color-text-secondary: #a3adbd;
+  --color-text-muted:     #6d7787;
+
+  /* Typography */
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-ui:      'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  /* Type scale */
+  --text-hero:       clamp(2.25rem, 5.5vw, 3.75rem);
+  --text-display-lg: clamp(1.75rem, 3.5vw, 2.375rem);
+  --text-display-md: 1.375rem;
+  --text-body-lg:    1.125rem;
+  --text-body-md:    1rem;
+  --text-label:      0.75rem;
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1.25rem;
+  --space-lg: 2rem;
+  --space-xl: 3.5rem;
+  --space-2xl: 5.5rem;
+
+  /* Shape */
+  --radius:    12px;
+  --radius-lg: 20px;
+  --shadow:    0 1px 2px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.45);
+  --shadow-lg: 0 2px 6px rgba(0,0,0,0.55), 0 28px 60px rgba(0,0,0,0.55);
+  --maxw:      1080px;
+}

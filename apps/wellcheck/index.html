@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WellCheck — Understand your well water test results</title>
+  <meta name="description" content="A private well owner's testing companion. Log your lab results, see what every number means against EPA drinking water limits in plain English, watch trends, and never miss your annual test. Offline, no account.">
+  <meta property="og:title" content="WellCheck">
+  <meta property="og:description" content="Your lab report, in plain English. For the 13 million households nobody tests the water for.">
+  <meta property="og:image" content="screenshots/02-dashboard.png">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-ui);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ---------------------------------------------------------------- nav */
+    nav {
+      background: var(--color-bg-deep);
+      padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 20;
+    }
+    .nav-wordmark {
+      font-size: 1rem; font-weight: 600; letter-spacing: 3px;
+      color: var(--color-teal-bright);
+    }
+    .nav-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .nav-links a { font-size: 0.875rem; color: rgba(241,248,251,0.78); transition: color .2s; }
+    .nav-links a:hover { color: #fff; }
+
+    /* --------------------------------------------------------------- hero */
+    .hero {
+      background:
+        radial-gradient(120% 90% at 80% 0%, rgba(8,145,178,0.14), transparent 60%),
+        var(--color-bg);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .hero-inner {
+      max-width: var(--maxw); margin: 0 auto;
+      padding: var(--space-2xl) 1.5rem var(--space-xl);
+      display: grid; grid-template-columns: 1.05fr 1fr; gap: var(--space-xl);
+      align-items: center;
+    }
+    .eyebrow {
+      font-size: var(--text-label); letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--color-teal-deep); font-weight: 600; margin-bottom: var(--space-sm);
+    }
+    .eyebrow::after {
+      content: ''; display: block; width: 26px; height: 2px;
+      background: var(--color-teal); margin-top: 6px;
+    }
+    h1 {
+      font-family: var(--font-display); font-size: var(--text-hero);
+      font-weight: 500; line-height: 1.08; color: var(--color-deep);
+      margin-bottom: var(--space-md); letter-spacing: -0.01em;
+    }
+    .lede { font-size: var(--text-body-lg); color: var(--color-text-secondary); margin-bottom: var(--space-lg); }
+    .hero-shot img {
+      border-radius: 30px; box-shadow: var(--shadow-lg);
+      border: 1px solid var(--color-border); margin: 0 auto; max-width: 320px;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: 999px; padding: 0.6rem 1.1rem;
+      font-size: 0.9rem; color: var(--color-text-secondary);
+    }
+    .badge strong { color: var(--color-deep); font-weight: 600; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-teal); }
+
+    /* ----------------------------------------------------------- sections */
+    section { padding: var(--space-2xl) 1.5rem; }
+    .wrap { max-width: var(--maxw); margin: 0 auto; }
+    .section-head { max-width: 660px; margin-bottom: var(--space-xl); }
+    h2 {
+      font-family: var(--font-display); font-size: var(--text-display-lg);
+      font-weight: 500; color: var(--color-deep); margin-bottom: var(--space-sm);
+      line-height: 1.18;
+    }
+    .section-head p { color: var(--color-text-secondary); font-size: var(--text-body-lg); }
+
+    .band { background: var(--color-surface); border-block: 1px solid var(--color-border); }
+    .band-dark {
+      background: linear-gradient(135deg, var(--color-bg-deep), var(--color-bg-deeper));
+      color: var(--color-text-invert);
+    }
+    .band-dark h2 { color: var(--color-teal-bright); }
+    .band-dark .section-head p { color: rgba(241,248,251,0.82); }
+
+    /* ------------------------------------------------------- status strip */
+    .statuses { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+    .status {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius); padding: var(--space-md) var(--space-lg);
+      border-left-width: 4px;
+    }
+    .status.ok { border-left-color: var(--color-ok); }
+    .status.advisory { border-left-color: var(--color-advisory); }
+    .status.exceeds { border-left-color: var(--color-exceeds); }
+    .status h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 4px; }
+    .status.ok h3 { color: var(--color-ok); }
+    .status.advisory h3 { color: var(--color-advisory); }
+    .status.exceeds h3 { color: var(--color-exceeds); }
+    .status p { font-size: 0.9375rem; color: var(--color-text-secondary); }
+
+    /* ------------------------------------------------------------ gallery */
+    .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+    .shot img {
+      border-radius: 22px; border: 1px solid var(--color-border);
+      box-shadow: var(--shadow); margin-bottom: var(--space-sm);
+    }
+    .shot h3 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; color: var(--color-deep); margin-bottom: 4px; }
+    .shot p { font-size: 0.9375rem; color: var(--color-text-secondary); }
+
+    /* ----------------------------------------------------------- features */
+    .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
+    .feature {
+      background: var(--color-bg); border: 1px solid var(--color-border);
+      border-radius: var(--radius); padding: var(--space-md) var(--space-lg);
+    }
+    .band .feature { background: var(--color-surface-sunken); }
+    .feature h3 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; color: var(--color-deep); margin-bottom: 4px; }
+    .feature p { font-size: 0.9375rem; color: var(--color-text-secondary); }
+
+    /* ---------------------------------------------------------- parameters */
+    .params { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: var(--space-md); }
+    .params span {
+      background: var(--color-surface-sunken); border: 1px solid var(--color-border);
+      border-radius: 999px; padding: 0.35rem 0.85rem;
+      font-size: 0.875rem; color: var(--color-text-secondary);
+    }
+
+    /* ------------------------------------------------------------ honesty */
+    .honest { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
+    .honest div { border-left: 2px solid var(--color-teal-bright); padding-left: var(--space-md); }
+    .honest h3 { font-size: 1rem; font-weight: 600; color: var(--color-teal-bright); margin-bottom: 4px; }
+    .honest p { color: rgba(241,248,251,0.82); font-size: 0.9375rem; }
+
+    /* ------------------------------------------------------------ pricing */
+    .price-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); max-width: 760px; }
+    .price {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg); padding: var(--space-lg);
+    }
+    .price.paid { border-color: var(--color-teal); box-shadow: var(--shadow); }
+    .price .tier { font-size: var(--text-label); letter-spacing: 2px; text-transform: uppercase; color: var(--color-teal-deep); font-weight: 600; }
+    .price .amount { font-family: var(--font-display); font-size: 2.25rem; color: var(--color-deep); margin: 6px 0 2px; }
+    .price .note { font-size: 0.875rem; color: var(--color-text-muted); margin-bottom: var(--space-md); }
+    .price ul { list-style: none; }
+    .price li { font-size: 0.9375rem; color: var(--color-text-secondary); padding-left: 1.4rem; position: relative; margin-bottom: 6px; }
+    .price li::before { content: '·'; position: absolute; left: 0.5rem; color: var(--color-teal); font-weight: 700; }
+
+    /* ------------------------------------------------------------- footer */
+    footer {
+      text-align: center; color: var(--color-text-muted); font-size: 0.85rem;
+      padding: var(--space-xl) 1.5rem var(--space-2xl);
+      border-top: 1px solid var(--color-border);
+    }
+    footer a { color: var(--color-teal-deep); }
+    footer a:hover { text-decoration: underline; }
+    .footer-links { display: flex; gap: 1.25rem; justify-content: center; margin-bottom: var(--space-sm); flex-wrap: wrap; }
+    .disclaimer { max-width: 620px; margin: 0 auto var(--space-sm); }
+
+    @media (max-width: 860px) {
+      .hero-inner { grid-template-columns: 1fr; padding-top: var(--space-xl); }
+      .hero-shot { order: -1; }
+      .statuses, .gallery, .features, .price-grid, .honest { grid-template-columns: 1fr; }
+      section { padding: var(--space-xl) 1.5rem; }
+      nav { padding: 1rem 1.25rem; flex-direction: column; gap: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <span class="nav-wordmark">WELLCHECK</span>
+    <span class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#limits">Limits</a>
+      <a href="#pricing">Pricing</a>
+      <a href="privacy.html">Privacy</a>
+    </span>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <p class="eyebrow">Private Well Water Log</p>
+        <h1>Your lab report, in plain English.</h1>
+        <p class="lede">
+          Thirteen million American households drink from a private well, and no agency tests that water
+          for them. The lab sends back a page of numbers with no verdict attached. WellCheck reads that
+          page with you: every value checked against EPA drinking water limits, explained in a sentence
+          you can act on, and kept where you can find it next year.
+        </p>
+        <p class="badge"><span class="dot"></span> <strong>Coming soon</strong> to the App Store · iPhone, iOS 17+</p>
+      </div>
+      <div class="hero-shot">
+        <img src="screenshots/02-dashboard.png" alt="WellCheck dashboard showing an All Clear well status for a June 2026 test, above a history of four earlier tests." width="414" height="900">
+      </div>
+    </div>
+  </header>
+
+  <section id="how" class="band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Three states, no chemistry degree</h2>
+        <p>
+          Every reading you enter lands in one of three buckets, with the EPA limit it was measured
+          against and a paragraph on what to do about it.
+        </p>
+      </div>
+      <div class="statuses">
+        <div class="status ok">
+          <h3>OK</h3>
+          <p>Inside the EPA limit and the acceptable range. Nothing to do but test again next year.</p>
+        </div>
+        <div class="status advisory">
+          <h3>Advisory</h3>
+          <p>Past a secondary, aesthetic guideline — taste, odour, staining, hardness. Not a health limit, and the app says so.</p>
+        </div>
+        <div class="status exceeds">
+          <h3>Exceeds limit</h3>
+          <p>Over an EPA primary maximum contaminant level or action level. The guidance tells you who to call.</p>
+        </div>
+      </div>
+      <div class="section-head" style="margin-top: var(--space-xl); margin-bottom: 0;">
+        <h2 style="font-size: var(--text-display-md);">Eighteen parameters</h2>
+        <p style="font-size: var(--text-body-md);">
+          The standard analysis state health departments recommend, with primary limits, secondary
+          guidelines, canonical units, and guidance text for each.
+        </p>
+        <div class="params">
+          <span>Total coliform</span><span>E. coli</span><span>Nitrate</span><span>Nitrite</span>
+          <span>Arsenic</span><span>Lead</span><span>Uranium</span><span>Radon</span>
+          <span>Copper</span><span>Fluoride</span><span>Manganese</span><span>Iron</span>
+          <span>Sodium</span><span>Chloride</span><span>Sulfate</span><span>Hardness</span>
+          <span>Total dissolved solids</span><span>pH</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <h2>From the envelope to an answer</h2>
+        <p>Photograph the lab report, confirm what was read, and the rest of the app fills itself in.</p>
+      </div>
+      <div class="gallery">
+        <div class="shot">
+          <img src="screenshots/09-scan-prefill.png" alt="New Test form with a Scan Lab Report button above fields for bacteria and health-based parameters." width="414" height="900" loading="lazy">
+          <h3>Scan the report</h3>
+          <p>Photograph the results page and on-device text recognition fills in what it recognises. Anything it cannot read stays blank for you to type.</p>
+        </div>
+        <div class="shot">
+          <img src="screenshots/03-detail.png" alt="Test detail screen showing each reading with its status, value against the limit, and guidance." width="414" height="900" loading="lazy">
+          <h3>Read the verdict</h3>
+          <p>Each reading shows its value, the limit it was compared against, and what that means for the people drinking it.</p>
+        </div>
+        <div class="shot">
+          <img src="screenshots/04-trends.png" alt="Trends chart plotting a contaminant across several tests with the EPA limit drawn as a line." width="414" height="900" loading="lazy">
+          <h3>Watch the direction</h3>
+          <p>Any parameter you have measured more than once, plotted across every test, with the limit drawn in.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Built for the years between tests</h2>
+        <p>The EPA recommends testing annually. Most owners do not, because nothing reminds them.</p>
+      </div>
+      <div class="features">
+        <div class="feature">
+          <h3>The annual nudge</h3>
+          <p>A local notification twelve months after your most recent test, adjustable to six or twenty-four. It reschedules itself whenever you log something new.</p>
+        </div>
+        <div class="feature">
+          <h3>A guide worth reading</h3>
+          <p>Every parameter has its own page: what it is, where it comes from in a well, what the limit is, and what people usually do about it.</p>
+        </div>
+        <div class="feature">
+          <h3>Works with any lab</h3>
+          <p>Type results from a county lab, a mail-in kit, or a state programme. Bacteria are present or absent; everything else takes a number.</p>
+        </div>
+        <div class="feature">
+          <h3>Offline and yours</h3>
+          <p>No account, no server, no analytics. Your results live in the app on your phone, and go nowhere else.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="limits" class="band-dark">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What WellCheck is not</h2>
+        <p>Water quality is a health question, and an app that overstates itself is worse than no app.</p>
+      </div>
+      <div class="honest">
+        <div>
+          <h3>It is not a lab</h3>
+          <p>WellCheck cannot measure anything. It records the numbers a certified laboratory gave you and compares them to published limits.</p>
+        </div>
+        <div>
+          <h3>It is not medical advice</h3>
+          <p>The guidance is an educational reference against EPA standards, not a substitute for your health department, your lab, or your doctor.</p>
+        </div>
+        <div>
+          <h3>The scanner is a first draft</h3>
+          <p>Text recognition on a photographed report gets things wrong. Nothing it reads is saved until you have checked it against the paper.</p>
+        </div>
+        <div>
+          <h3>One well, for now</h3>
+          <p>This version tracks a single well. If you own several, they would share one history — worth knowing before you buy.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>One purchase. No subscription.</h2>
+        <p>Logging and interpreting your results is free, forever, for everyone.</p>
+      </div>
+      <div class="price-grid">
+        <div class="price">
+          <p class="tier">Free</p>
+          <p class="amount">$0</p>
+          <p class="note">The part that matters most</p>
+          <ul>
+            <li>Unlimited tests, logged and kept</li>
+            <li>All 18 parameters interpreted against EPA limits</li>
+            <li>The full parameter guide</li>
+            <li>Annual test reminders</li>
+          </ul>
+        </div>
+        <div class="price paid">
+          <p class="tier">WellCheck Pro</p>
+          <p class="amount">$8.99</p>
+          <p class="note">One-time purchase, not a subscription</p>
+          <ul>
+            <li>Trend charts for every parameter</li>
+            <li>Lab report scanning</li>
+            <li>All future updates</li>
+            <li>No ads, ever, in either tier</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="privacy.html">Privacy</a>
+      <a href="mailto:support@addictingapps.org">Contact</a>
+      <a href="/">Addicting Apps</a>
+    </div>
+    <p class="disclaimer">
+      WellCheck is an educational reference tool. It does not test water, certify results, or provide
+      medical advice. Screenshots show sample data. Limits shown in the app come from EPA National
+      Primary and Secondary Drinking Water Regulations.
+    </p>
+    <p>© 2026 Addicting Apps · <a href="https://www.addictingapps.org">addictingapps.org</a></p>
+  </footer>
+</body>
+</html>

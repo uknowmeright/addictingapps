@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Miner Monitor — Bitaxe and solo pool stats on your phone</title>
+  <meta name="description" content="Watch your Bitaxe and AxeOS miners on your own network, plus your solo pool workers on public-pool and ckpool. Hashrate, temperature, shares, alerts, and Home Screen widgets. No accounts, no analytics.">
+  <meta property="og:title" content="Miner Monitor">
+  <meta property="og:description" content="Your whole solo mining fleet on one screen — desk miners and pool workers alike.">
+  <meta property="og:image" content="screenshots/01-dashboard.png">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-ui);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ---------------------------------------------------------------- nav */
+    nav {
+      background: rgba(11,13,17,0.88); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--color-border);
+      padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 20;
+    }
+    .nav-wordmark {
+      font-family: var(--font-mono); font-size: 0.9rem; font-weight: 500;
+      letter-spacing: 2px; color: var(--color-orange);
+    }
+    .nav-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .nav-links a { font-size: 0.875rem; color: var(--color-text-secondary); transition: color .2s; }
+    .nav-links a:hover { color: var(--color-text); }
+
+    /* --------------------------------------------------------------- hero */
+    .hero {
+      background:
+        radial-gradient(90% 70% at 15% 0%, rgba(247,147,26,0.13), transparent 62%),
+        radial-gradient(70% 60% at 90% 20%, rgba(34,197,94,0.08), transparent 60%);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .hero-inner {
+      max-width: var(--maxw); margin: 0 auto;
+      padding: var(--space-2xl) 1.5rem var(--space-xl);
+      display: grid; grid-template-columns: 1.05fr 1fr; gap: var(--space-xl);
+      align-items: center;
+    }
+    .eyebrow {
+      font-family: var(--font-mono); font-size: var(--text-label);
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--color-orange); margin-bottom: var(--space-sm);
+    }
+    h1 {
+      font-family: var(--font-display); font-size: var(--text-hero);
+      font-weight: 700; line-height: 1.05; letter-spacing: -0.02em;
+      margin-bottom: var(--space-md);
+    }
+    .lede { font-size: var(--text-body-lg); color: var(--color-text-secondary); margin-bottom: var(--space-lg); }
+    .hero-shot img {
+      border-radius: 30px; box-shadow: var(--shadow-lg);
+      border: 1px solid var(--color-border); margin: 0 auto; max-width: 320px;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: 999px; padding: 0.6rem 1.1rem;
+      font-size: 0.9rem; color: var(--color-text-secondary);
+    }
+    .badge strong { color: var(--color-text); font-weight: 600; }
+    .pulse {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--color-live);
+      box-shadow: 0 0 0 0 rgba(34,197,94,0.6); animation: pulse 2.4s infinite;
+    }
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(34,197,94,0.55); }
+      70%  { box-shadow: 0 0 0 9px rgba(34,197,94,0); }
+      100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+    }
+    @media (prefers-reduced-motion: reduce) { .pulse { animation: none; } }
+
+    /* ----------------------------------------------------------- sections */
+    section { padding: var(--space-2xl) 1.5rem; }
+    .wrap { max-width: var(--maxw); margin: 0 auto; }
+    .section-head { max-width: 660px; margin-bottom: var(--space-xl); }
+    h2 {
+      font-family: var(--font-display); font-size: var(--text-display-lg);
+      font-weight: 600; letter-spacing: -0.015em; margin-bottom: var(--space-sm);
+      line-height: 1.18;
+    }
+    .section-head p { color: var(--color-text-secondary); font-size: var(--text-body-lg); }
+    .band { background: var(--color-bg-raised); border-block: 1px solid var(--color-border); }
+
+    /* -------------------------------------------------------------- cards */
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+    .card {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius); padding: var(--space-md) var(--space-lg);
+    }
+    .card h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; margin-bottom: 6px; }
+    .card p { font-size: 0.9375rem; color: var(--color-text-secondary); }
+    .card.accent { border-color: var(--color-border-hot); }
+    .card .k { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-orange); letter-spacing: 1px; text-transform: uppercase; }
+
+    /* ------------------------------------------------------------ metrics */
+    .metrics { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: var(--space-md); }
+    .metrics span {
+      font-family: var(--font-mono); font-size: 0.8125rem;
+      background: var(--color-surface-hi); border: 1px solid var(--color-border);
+      border-radius: 6px; padding: 0.3rem 0.7rem; color: var(--color-text-secondary);
+    }
+
+    /* ------------------------------------------------------------ gallery */
+    .gallery { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: var(--space-lg); }
+    .shot img {
+      border-radius: 22px; border: 1px solid var(--color-border);
+      box-shadow: var(--shadow); margin-bottom: var(--space-sm);
+    }
+    .shot h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; margin-bottom: 4px; }
+    .shot p { font-size: 0.9375rem; color: var(--color-text-secondary); }
+
+    /* ------------------------------------------------------------ honesty */
+    .honest { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
+    .honest div { border-left: 2px solid var(--color-orange); padding-left: var(--space-md); }
+    .honest h3 { font-size: 1rem; font-weight: 600; color: var(--color-orange-soft); margin-bottom: 4px; }
+    .honest p { font-size: 0.9375rem; color: var(--color-text-secondary); }
+
+    /* ------------------------------------------------------------ pricing */
+    .price-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); max-width: 780px; }
+    .price {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg); padding: var(--space-lg);
+    }
+    .price.paid { border-color: var(--color-border-hot); box-shadow: var(--shadow); }
+    .price .tier { font-family: var(--font-mono); font-size: var(--text-label); letter-spacing: 1.5px; text-transform: uppercase; color: var(--color-orange); }
+    .price .amount { font-family: var(--font-display); font-size: 2.25rem; font-weight: 700; margin: 6px 0 2px; }
+    .price .note { font-size: 0.875rem; color: var(--color-text-muted); margin-bottom: var(--space-md); }
+    .price ul { list-style: none; }
+    .price li { font-size: 0.9375rem; color: var(--color-text-secondary); padding-left: 1.4rem; position: relative; margin-bottom: 6px; }
+    .price li::before { content: '›'; position: absolute; left: 0.45rem; color: var(--color-orange); }
+    .tiers { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: var(--space-md); }
+    .tiers span {
+      font-family: var(--font-mono); font-size: 0.8125rem;
+      border: 1px solid var(--color-border-hot); border-radius: 6px;
+      padding: 0.3rem 0.7rem; color: var(--color-orange-soft);
+    }
+
+    /* ------------------------------------------------------------- footer */
+    footer {
+      text-align: center; color: var(--color-text-muted); font-size: 0.85rem;
+      padding: var(--space-xl) 1.5rem var(--space-2xl);
+      border-top: 1px solid var(--color-border);
+    }
+    footer a { color: var(--color-orange); }
+    footer a:hover { text-decoration: underline; }
+    .footer-links { display: flex; gap: 1.25rem; justify-content: center; margin-bottom: var(--space-sm); flex-wrap: wrap; }
+    .disclaimer { max-width: 620px; margin: 0 auto var(--space-sm); }
+
+    @media (max-width: 860px) {
+      .hero-inner { grid-template-columns: 1fr; padding-top: var(--space-xl); }
+      .hero-shot { order: -1; }
+      .grid-2, .grid-3, .gallery, .price-grid, .honest { grid-template-columns: 1fr; }
+      section { padding: var(--space-xl) 1.5rem; }
+      nav { padding: 1rem 1.25rem; flex-direction: column; gap: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <span class="nav-wordmark">MINER_MONITOR</span>
+    <span class="nav-links">
+      <a href="#devices">Devices</a>
+      <a href="#pools">Pools</a>
+      <a href="#pricing">Pricing</a>
+      <a href="privacy.html">Privacy</a>
+    </span>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <p class="eyebrow">Bitaxe &amp; solo pool monitor</p>
+        <h1>The whole fleet, one screen.</h1>
+        <p class="lede">
+          The Bitaxe humming on your desk and the workers hashing into your solo pool are the same
+          operation, but they normally live in two different browser tabs. Miner Monitor puts them on
+          one dashboard, refreshed every ten seconds, and tells you plainly when a number has gone stale.
+        </p>
+        <p class="badge"><span class="pulse"></span> <strong>Version 2.0 coming soon</strong> · iPhone, iOS 17+</p>
+      </div>
+      <div class="hero-shot">
+        <img src="screenshots/01-dashboard.png" alt="Miner Monitor dashboard with a bitaxe card at 712 GH/s and a Solo Fleet card at 456 TH/s, both marked Live." width="414" height="900">
+      </div>
+    </div>
+  </header>
+
+  <section id="devices" class="band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Your miners, on your network</h2>
+        <p>
+          Add any Bitaxe, NerdQaxe, or other AxeOS device. Miner Monitor finds them on your Wi-Fi, or
+          takes a hostname or IP with a custom port if you would rather be explicit.
+        </p>
+      </div>
+      <div class="grid-2">
+        <div class="card accent">
+          <p class="k">Live telemetry</p>
+          <h3>Everything the board reports</h3>
+          <p>Hashrate, temperature, power draw, voltage, frequency, best difficulty, accepted shares, and uptime — read straight from the device.</p>
+          <div class="metrics">
+            <span>GH/s</span><span>°C</span><span>W</span><span>V</span><span>MHz</span><span>best diff</span><span>uptime</span>
+          </div>
+        </div>
+        <div class="card">
+          <p class="k">Control</p>
+          <h3>Restart from the sofa</h3>
+          <p>When a miner sulks, restart it from the device screen instead of finding a laptop and typing an IP address you half remember.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pools">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Solo pool stats from anywhere</h2>
+        <p>Track your workers on public-pool.io and solo.ckpool.org by payout address — no login, and nothing to configure at the pool.</p>
+      </div>
+      <div class="gallery">
+        <div class="shot">
+          <img src="screenshots/02-device-detail.png" alt="Device detail for a bitaxe: 712 GH/s, temperature, power, voltage, frequency, best difficulty, shares, uptime, and a restart control." width="414" height="900" loading="lazy">
+          <h3>Device detail</h3>
+          <p>One miner in full — temperature, power, voltage, frequency, shares, firmware, uptime — and the restart button underneath.</p>
+        </div>
+        <div class="shot" style="display:flex; flex-direction:column; justify-content:center;">
+          <div class="card accent" style="margin-bottom: var(--space-sm);">
+            <p class="k">Per worker</p>
+            <h3>Who is actually hashing</h3>
+            <p>Total hashrate, a per-worker breakdown, best difficulty found, and when each worker was last seen by the pool.</p>
+          </div>
+          <div class="card">
+            <p class="k">Freshness</p>
+            <h3>Live vs. stale, always</h3>
+            <p>Every card states how old its numbers are. A frozen figure that looks live is worse than no figure at all.</p>
+          </div>
+          <div class="card" style="margin-top: var(--space-sm);">
+            <p class="k">Setup</p>
+            <h3>Added in seconds</h3>
+            <p>Discover miners on the LAN, type a host and port, or scan the QR code of your payout address to pull in pool stats.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Alerts, honestly</h2>
+        <p>Set your own thresholds; the app watches them and tells you exactly when it can watch them.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <p class="k">Runs hot</p>
+          <h3>Temperature ceiling</h3>
+          <p>An alert when a device crosses the temperature you set, before the chip throttles itself.</p>
+        </div>
+        <div class="card">
+          <p class="k">Falls off</p>
+          <h3>Hashrate floor</h3>
+          <p>An alert when output drops under your floor — the first sign of a bad fan, a bad PSU, or a bad flash.</p>
+        </div>
+        <div class="card">
+          <p class="k">Goes dark</p>
+          <h3>Offline</h3>
+          <p>An alert when a miner stops answering at all.</p>
+        </div>
+      </div>
+      <div class="honest" style="margin-top: var(--space-lg);">
+        <div>
+          <h3>These alerts need the app open</h3>
+          <p>Device alerts fire while Miner Monitor is running, because your miners live on your LAN and nothing else can reach them. Push alerts for pool stats that work with the app closed are the next release.</p>
+        </div>
+        <div>
+          <h3>It is a monitor, not a manager</h3>
+          <p>Miner Monitor reads your devices and restarts them. It does not tune, overclock, flash firmware, or configure your pool.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Free for one. Pro for the fleet.</h2>
+        <p>Every stat, alert, and restart works in the free tier. Pro lifts the limits and adds widgets.</p>
+      </div>
+      <div class="price-grid">
+        <div class="price">
+          <p class="tier">Free</p>
+          <p class="amount">$0</p>
+          <p class="note">One device and one pool</p>
+          <ul>
+            <li>Full device telemetry and restart</li>
+            <li>Full solo pool and per-worker stats</li>
+            <li>Temperature, hashrate, and offline alerts</li>
+            <li>No ads and no data collection</li>
+          </ul>
+        </div>
+        <div class="price paid">
+          <p class="tier">Miner Monitor Pro</p>
+          <p class="amount">$49.99</p>
+          <p class="note">Lifetime, or pay monthly if you prefer</p>
+          <ul>
+            <li>Unlimited devices and pools</li>
+            <li>Home Screen widgets for a miner or the whole fleet</li>
+          </ul>
+          <div class="tiers"><span>$2.99 / month</span><span>$19.99 / year</span><span>$49.99 lifetime</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom: var(--space-md);">
+        <h2>No accounts. No analytics. No middleman.</h2>
+        <p>
+          Miner Monitor talks to three things: the miners on your own network, public-pool.io, and
+          solo.ckpool.org. There is no server of ours in the path, nothing to sign into, and no
+          identifier attached to you. Your hashrate is nobody else's business.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="privacy.html">Privacy</a>
+      <a href="mailto:support@addictingapps.org">Contact</a>
+      <a href="/">Addicting Apps</a>
+    </div>
+    <p class="disclaimer">
+      Screenshots show sample data. Bitaxe, NerdQaxe, AxeOS, public-pool.io, and ckpool are independent
+      projects; Miner Monitor is not affiliated with or endorsed by any of them.
+    </p>
+    <p>© 2026 Addicting Apps · <a href="https://www.addictingapps.org">addictingapps.org</a></p>
+  </footer>
+</body>
+</html>

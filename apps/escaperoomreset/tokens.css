@@ -1,0 +1,52 @@
+/* Escape Room Reset — "Brass & Ink": lock brass, Edison warmth, paper and ink. */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  /* Paper and ink */
+  --color-bg:             #faf6ef;
+  --color-bg-deep:        #171310;
+  --color-bg-deeper:      #0d0b09;
+  --color-surface:        #ffffff;
+  --color-surface-sunken: #f2ece1;
+  --color-border:         #e4dbcb;
+
+  /* Brass and room accents */
+  --color-brass:          #a16207;
+  --color-brass-bright:   #e0aa4a;
+  --color-rust:           #b4551f;
+  --color-teal:           #0f766e;
+  --color-plum:           #7c4585;
+
+  /* Text */
+  --color-text:           #1d1811;
+  --color-text-secondary: #4f463a;
+  --color-text-muted:     #7d7364;
+  --color-text-invert:    #faf6ef;
+
+  /* Typography */
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-ui:      'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Type scale */
+  --text-hero:       clamp(2.25rem, 5.5vw, 3.75rem);
+  --text-display-lg: clamp(1.75rem, 3.5vw, 2.5rem);
+  --text-display-md: 1.375rem;
+  --text-body-lg:    1.125rem;
+  --text-body-md:    1rem;
+  --text-label:      0.75rem;
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1.25rem;
+  --space-lg: 2rem;
+  --space-xl: 3.5rem;
+  --space-2xl: 5.5rem;
+
+  /* Shape */
+  --radius:    16px;
+  --radius-lg: 22px;
+  --shadow:    0 1px 2px rgba(29, 24, 17, 0.05), 0 8px 24px rgba(29, 24, 17, 0.08);
+  --shadow-lg: 0 2px 4px rgba(29, 24, 17, 0.07), 0 22px 55px rgba(29, 24, 17, 0.16);
+  --maxw:      1080px;
+}
