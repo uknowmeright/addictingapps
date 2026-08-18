@@ -1,168 +1,548 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Addicting Apps — Small, sharp iPhone apps for specific jobs</title>
+  <meta name="description" content="An independent iOS studio. Compliance tools for inspectors and operators, logbooks for people who need to remember what worked, Bitcoin monitors, and a few games. Fourteen apps on the App Store.">
+  <meta name="author" content="Addicting Apps">
+  <meta property="og:title" content="Addicting Apps">
+  <meta property="og:description" content="Small, sharp iPhone apps for specific jobs.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.addictingapps.org/">
+  <link rel="icon" href="favicon.ico">
+  <link rel="canonical" href="https://www.addictingapps.org/">
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:            #0b0c0f;
+      --bg-raised:     #131519;
+      --surface:       #16181d;
+      --surface-hi:    #1d2027;
+      --border:        #252932;
+      --border-lit:    #343a45;
 
-    <title>Addicting Apps</title>
+      --accent:        #f0a83c;
+      --accent-soft:   #ffc978;
+      --live:          #4ade80;
 
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.css" rel="stylesheet">
+      --text:          #edeff3;
+      --text-2:        #a2aab8;
+      --text-3:        #6b7382;
 
-    <!-- Custom CSS for the 'Thumbnail Gallery' Template -->
-    <link href="css/1-col-portfolio.css" rel="stylesheet">
+      --font-display: 'Inter Tight', system-ui, sans-serif;
+      --font-ui:      'Inter', system-ui, -apple-system, sans-serif;
+
+      --maxw: 1140px;
+      --radius: 16px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-ui);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; height: auto; display: block; }
+
+    /* ---------------------------------------------------------------- nav */
+    nav {
+      background: rgba(11,12,15,0.88); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 30;
+    }
+    .nav-inner {
+      max-width: var(--maxw); margin: 0 auto;
+      padding: 0.9rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .wordmark {
+      font-family: var(--font-display); font-weight: 700; font-size: 1.0625rem;
+      letter-spacing: -0.02em;
+    }
+    .wordmark span { color: var(--accent); }
+    .nav-links { display: flex; gap: 1.4rem; flex-wrap: wrap; }
+    .nav-links a { font-size: 0.875rem; color: var(--text-2); transition: color .18s; }
+    .nav-links a:hover { color: var(--text); }
+
+    /* --------------------------------------------------------------- hero */
+    .hero {
+      border-bottom: 1px solid var(--border);
+      background:
+        radial-gradient(70% 60% at 15% 0%, rgba(240,168,60,0.10), transparent 62%),
+        radial-gradient(55% 50% at 90% 30%, rgba(96,165,250,0.07), transparent 65%);
+    }
+    .hero-inner { max-width: var(--maxw); margin: 0 auto; padding: 5rem 1.5rem 3.5rem; }
+    .eyebrow {
+      font-size: 0.75rem; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--accent); font-weight: 600; margin-bottom: 1.1rem;
+    }
+    h1 {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: clamp(2.25rem, 5.5vw, 3.75rem); line-height: 1.03;
+      letter-spacing: -0.03em; margin-bottom: 1.25rem; max-width: 18ch;
+    }
+    .hero p {
+      font-size: 1.125rem; color: var(--text-2); max-width: 62ch; margin-bottom: 2rem;
+    }
+    .stats { display: flex; flex-wrap: wrap; gap: 2.5rem; }
+    .stat .n {
+      font-family: var(--font-display); font-size: 1.75rem; font-weight: 700;
+      line-height: 1; color: var(--accent);
+    }
+    .stat .l {
+      font-size: 0.8125rem; letter-spacing: 1.2px; text-transform: uppercase;
+      color: var(--text-3); margin-top: 0.35rem;
+    }
+
+    /* ----------------------------------------------------------- sections */
+    section { padding: 3.75rem 1.5rem; }
+    .wrap { max-width: var(--maxw); margin: 0 auto; }
+    .group + .group { margin-top: 3.25rem; }
+    .group[id] { scroll-margin-top: 5.5rem; }
+    .group-head {
+      display: flex; align-items: baseline; gap: 0.9rem; flex-wrap: wrap;
+      padding-bottom: 0.85rem; margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    h2 {
+      font-family: var(--font-display); font-weight: 600; font-size: 1.3125rem;
+      letter-spacing: -0.015em;
+    }
+    .group-head .note { font-size: 0.875rem; color: var(--text-3); }
+
+    /* -------------------------------------------------------------- cards */
+    .grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.15rem;
+      display: flex; gap: 1rem; align-items: flex-start;
+      transition: border-color .18s, background .18s, transform .18s;
+      position: relative;
+    }
+    .card:hover { border-color: var(--border-lit); background: var(--surface-hi); transform: translateY(-2px); }
+    .card .icon {
+      width: 60px; height: 60px; border-radius: 14px; flex: none;
+      border: 1px solid var(--border-lit); overflow: hidden; background: var(--bg-raised);
+    }
+    .card .icon img { width: 100%; height: 100%; object-fit: cover; }
+    .card .body { min-width: 0; flex: 1; }
+    .card h3 {
+      font-family: var(--font-display); font-size: 1.0625rem; font-weight: 600;
+      letter-spacing: -0.01em; margin-bottom: 0.2rem;
+    }
+    .card h3 a::after {
+      content: ''; position: absolute; inset: 0; border-radius: var(--radius);
+    }
+    .card p { font-size: 0.9rem; color: var(--text-2); margin-bottom: 0.7rem; }
+    .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; font-size: 0.75rem; }
+    .tag {
+      border: 1px solid var(--border-lit); border-radius: 999px;
+      padding: 0.15rem 0.6rem; color: var(--text-3);
+    }
+    .tag.price { color: var(--accent-soft); border-color: rgba(240,168,60,0.35); }
+    .tag.free { color: var(--live); border-color: rgba(74,222,128,0.3); }
+    .tag.soon { color: var(--text-2); border-style: dashed; }
+    .store {
+      position: relative; z-index: 1;
+      color: var(--text-3); border-bottom: 1px solid transparent;
+      transition: color .18s, border-color .18s;
+    }
+    a.store:hover { color: var(--accent-soft); border-color: rgba(240,168,60,0.5); }
+
+    /* apps with no store artwork get a drawn mark */
+    .icon.drawn { display: grid; place-items: center; }
+    .icon.drawn svg { width: 100%; height: 100%; }
+
+    /* --------------------------------------------------------- old games */
+    .legacy { background: var(--bg-raised); border-top: 1px solid var(--border); }
+    .legacy .group-head { border-bottom-color: var(--border-lit); }
+    .legacy h2 { font-size: 1.0625rem; color: var(--text-2); }
+    .legacy-list {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0.6rem;
+    }
+    .legacy-list a {
+      display: flex; align-items: baseline; gap: 0.5rem;
+      font-size: 0.9rem; color: var(--text-2);
+      padding: 0.55rem 0.75rem; border: 1px solid var(--border);
+      border-radius: 10px; transition: color .18s, border-color .18s;
+    }
+    .legacy-list a:hover { color: var(--text); border-color: var(--border-lit); }
+    .legacy-list .yr { font-size: 0.75rem; color: var(--text-3); margin-left: auto; }
+
+    /* ------------------------------------------------------------- footer */
+    footer { border-top: 1px solid var(--border); padding: 2.5rem 1.5rem 3.5rem; }
+    .footer-inner {
+      max-width: var(--maxw); margin: 0 auto;
+      display: flex; flex-wrap: wrap; gap: 1rem 2rem;
+      align-items: center; justify-content: space-between;
+      font-size: 0.85rem; color: var(--text-3);
+    }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+    .footer-links a { color: var(--text-2); }
+    .footer-links a:hover { color: var(--accent-soft); }
+
+    @media (max-width: 640px) {
+      .hero-inner { padding: 3.25rem 1.5rem 2.5rem; }
+      .stats { gap: 1.75rem; }
+      section { padding: 2.75rem 1.5rem; }
+      /* a two-row sticky nav eats too much of a phone screen */
+      nav { position: static; }
+      .group[id] { scroll-margin-top: 1rem; }
+      .nav-inner { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
+      .nav-links { gap: 0.9rem 1.1rem; }
+      .nav-links a { font-size: 0.8125rem; }
+    }
+  </style>
 </head>
-
 <body>
-    <nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
 
-                <a class="navbar-brand" href="index.html">Addicting Apps</a>
-            </div>
+  <nav>
+    <div class="nav-inner">
+      <a class="wordmark" href="/">Addicting<span>Apps</span></a>
+      <span class="nav-links">
+        <a href="#work">Field &amp; compliance</a>
+        <a href="#logs">Logbooks</a>
+        <a href="#money">Bitcoin</a>
+        <a href="#everyday">Everyday</a>
+        <a href="#fun">Fun</a>
+        <a href="contact.html">Contact</a>
+      </span>
+    </div>
+  </nav>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="about.html">About</a>
-                    </li>
-                    <li><a href="resources.html">Resources</a>
-                    </li>
-                    <li><a href="contact.html">Contact</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">Independent iOS studio</p>
+      <h1>Small, sharp apps for specific jobs.</h1>
+      <p>
+        Most of these exist because somebody was doing a precise, repetitive job out of a notebook —
+        an inspector recording kVp readings, a game master resetting a room between bookings, a piper
+        trying to remember which reed sang last Saturday. The apps are narrow on purpose, they say
+        plainly what they cannot do, and most of them work with no signal at all.
+      </p>
+      <div class="stats">
+        <div class="stat"><p class="n">14</p><p class="l">On the App Store</p></div>
+        <div class="stat"><p class="n">2</p><p class="l">In development</p></div>
+        <div class="stat"><p class="n">iOS 17+</p><p class="l">iPhone &amp; iPad</p></div>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="wrap">
+
+      <!-- ------------------------------------------------ field & compliance -->
+      <div class="group" id="work">
+        <div class="group-head">
+          <h2>Field &amp; compliance</h2>
+          <span class="note">Records that have to survive an audit</span>
         </div>
-        <!-- /.container -->
-    </nav>
+        <div class="grid">
 
-    <div class="container">
-
-        <div class="row">
-
-            <div class="col-lg-12">
-                <h1 class="page-header">Games for Sale
-                    <small>Contact me about Liscencing</small>
-                </h1>
+          <article class="card">
+            <span class="icon"><img src="images/apps/epefield.png" alt="" width="160" height="160" loading="lazy"></span>
+            <div class="body">
+              <h3><a href="apps/epefield/">Dental X-Ray EPE Workflow</a></h3>
+              <p>Equipment performance evaluations for dental X-ray units: jurisdiction-aware due dates, calibrated instruments, and locked, signed PDF reports.</p>
+              <p class="meta">
+                <span class="tag price">$39.99</span>
+                <span class="tag">iPhone &amp; iPad</span>
+                <a class="store" href="https://apps.apple.com/us/app/dental-x-ray-epe-workflow/id6790243553">App&nbsp;Store&nbsp;&#8599;</a>
+              </p>
             </div>
+          </article>
 
-        </div>
-
-
-<!-- Say What -->
-        <div class="row">
-
-            <div class="col-lg-6 col-md-6">
-                <a href="#">
-                    <img class="img-responsive" src="images/SayWhat.png" alt="">
-                </a>
+          <article class="card">
+            <span class="icon"><img src="images/apps/hm183.png" alt="" width="160" height="160" loading="lazy"></span>
+            <div class="body">
+              <h3><a href="https://apps.apple.com/us/app/hm-183-tank-inspector/id6790239907">HM-183 Tank Inspector</a></h3>
+              <p>Test and inspection programmes for DOT 406/407/412 and MC 306/307/312/330/331 cargo tanks, under 49 CFR Part 180 Subpart E.</p>
+              <p class="meta">
+                <span class="tag price">$199.00</span>
+                <span class="tag">iPhone &amp; iPad</span>
+                <a class="store" href="apps/hm183/privacy.html">Privacy</a>
+              </p>
             </div>
+          </article>
 
-            <div class="col-lg-6 col-md-6">
-                <h3>Say What?</h3>
-                <p>Submit a phrase or link that you want publicized. There is no account creation necessary. Just pick a username and submit!
-
-                Every hour a completely random user will be selected and their phrase will be displayed for all to see. 
-
-                Phrases can be anything from encouraging words, advertisements, or just silly words. Get creative and most importantly have fun! </p>
-                <a class="btn btn-primary" href="https://itunes.apple.com/us/app/say-what-addictingapps/id1136036443?ls=1&mt=8">Install Game <span class="glyphicon glyphicon-chevron-right"></span></a>
+          <article class="card">
+            <span class="icon"><img src="images/apps/escaperoomreset.png" alt="" width="160" height="160" loading="lazy"></span>
+            <div class="body">
+              <h3><a href="apps/escaperoomreset/">Escape Room Reset Checklist</a></h3>
+              <p>Photo-guided reset checklists for game masters, with a turnaround timer, a required double-check pass, and a signed log.</p>
+              <p class="meta">
+                <span class="tag free">Free</span>
+                <span class="tag">iPhone &amp; iPad</span>
+                <a class="store" href="https://apps.apple.com/us/app/escape-room-reset-checklist/id6792998366">App&nbsp;Store&nbsp;&#8599;</a>
+              </p>
             </div>
-
-        </div>
-
-        <hr>
-
-        <div class="row">
-
-            <div class="col-lg-6 col-md-6">
-                <a href="#">
-                    <img class="img-responsive" src="images/chikuns.png" alt="">
-                </a>
-            </div>
-
-            <div class="col-lg-6 col-md-6">
-                <h3>Chikuns</h3>
-                <h4>To The Moon</h4>
-                <p>You are a Chikun playing the cryptocurrency roller coaster. Your goal is to buy Cryptos low and sell them high! Each level is a different pump, where everyone is buying coins to drive the price up, so you want to buy as many coins early as possible. Be careful though! Pumps never last long and will crash HARD. Once you reach the moon you want to dump your coins quickly to maximize profit. </p>
-                <a class="btn btn-primary" href="games/chikuns/">Play Game <span class="glyphicon glyphicon-chevron-right"></span></a> <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.Games.addictingapps.chikuns&hl=en">Install Game<span class="glyphicon glyphicon-chevron-right"></span></a>
-            </div>
-
-        </div>
-
-        <hr>
-
-        <div class="row">
-
-            <div class="col-lg-6 col-md-6">
-                <a href="#">
-                    <img class="img-responsive" src="images/balloon.png" alt="">
-                </a>
-            </div>
-
-            <div class="col-lg-6 col-md-6">
-                <h3>Balloon Destroyer</h3>
-                <p>Destroy Ballons with your fingers! Dont let too many past or you will lose! Tap Balloons to pop them. Carefull though, Some are worth more than others. Buy upgrades from the shop to stay efficient and destroy as many balloons as possible!</p>
-                <a class="btn btn-primary" href="games/balloon/">Play Game <span class="glyphicon glyphicon-chevron-right"></span></a>
-            </div>
+          </article>
 
         </div>
+      </div>
 
+      <!-- ------------------------------------------------------------ logs -->
+      <div class="group" id="logs">
+        <div class="group-head">
+          <h2>Logbooks</h2>
+          <span class="note">For remembering what actually worked</span>
+        </div>
+        <div class="grid">
 
-        <hr>
-
-        <div class="row">
-
-            <div class="col-lg-6 col-md-6">
-                <a href="#">
-                    <img class="img-responsive" src="images/nutrition.png" alt="">
-                </a>
+          <article class="card">
+            <span class="icon"><img src="images/apps/wellwaterlog.png" alt="" width="160" height="160" loading="lazy"></span>
+            <div class="body">
+              <h3><a href="apps/wellcheck/">Well Water Log</a></h3>
+              <p>Your well's lab results read against EPA drinking water limits in plain English, with trends and an annual test reminder.</p>
+              <p class="meta">
+                <span class="tag free">Free</span>
+                <span class="tag">iPhone</span>
+                <a class="store" href="https://apps.apple.com/us/app/well-water-log/id6789409017">App&nbsp;Store&nbsp;&#8599;</a>
+              </p>
             </div>
+          </article>
 
-            <div class="col-lg-6 col-md-6">
-                <h3>Nutrition Expedition</h3>
-                <p>A highly addictive game in which you control a basket to try and catch falling food from the sky! Try to stay alive as time is ticking and no one can stay alive without proper nutrition. Learn what food to catch and what to avoid! Collect boosts to help you stay healthy!
-Save your score to our global servers to see how you stack up against the competition!</p>
-                <a class="btn btn-primary" href="games/nutrition/">Play Game<span class="glyphicon glyphicon-chevron-right"></span></a> <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.AddictingApps.NutritionExpedition&hl=en">Install Game<span class="glyphicon glyphicon-chevron-right"></span></a> 
+          <article class="card">
+            <span class="icon"><img src="images/apps/dcccvault.png" alt="" width="160" height="160" loading="lazy"></span>
+            <div class="body">
+              <h3><a href="apps/dcccvault/">DCC CV Vault</a></h3>
+              <p>Every locomotive's decoder settings and function mapping, snapshotted before you tune and restorable when it goes wrong.</p>
+              <p class="meta">
+                <span class="tag free">Free</span>
+                <span class="tag">iPhone, iPad &amp; Mac</span>
+                <a class="store" href="https://apps.apple.com/us/app/dcc-cv-vault/id6796871144">App&nbsp;Store&nbsp;&#8599;</a>
+              </p>
             </div>
+          </article>
+
+          <article class="card">
+            <span class="icon"><img src="images/apps/reedfit.png" alt="" width="160" height="160" loading="lazy"></span>
+            <div class="body">
+              <h3><a href="apps/reedfit/">ReedFit</a></h3>
+              <p>A bagpipe reed log: which reed, in which chanter, at which seating, actually sounded right — settled with your own recorded tests.</p>
+              <p class="meta">
+                <span class="tag soon">Coming soon</span>
+                <span class="tag">iPhone</span>
+              </p>
+            </div>
+          </article>
 
         </div>
+      </div>
 
-        <hr>
+      <!-- ----------------------------------------------------------- money -->
+      <div class="group" id="money">
+        <div class="group-head">
+          <h2>Bitcoin</h2>
+          <span class="note">Read-only, by construction</span>
+        </div>
+        <div class="grid">
 
-        <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p>Copyright &copy; AddictingApps 2014</p>
-                </div>
+          <article class="card">
+            <span class="icon"><img src="images/apps/minermonitor.png" alt="" width="160" height="160" loading="lazy"></span>
+            <div class="body">
+              <h3><a href="apps/minermonitor/">Miner Monitor</a></h3>
+              <p>Bitaxe and AxeOS miners on your own network plus solo pool workers in the cloud, on one dashboard that says how fresh each number is.</p>
+              <p class="meta">
+                <span class="tag free">Free</span>
+                <span class="tag">Pro unlock</span>
+                <a class="store" href="https://apps.apple.com/us/app/miner-monitor/id1312950960">App&nbsp;Store&nbsp;&#8599;</a>
+              </p>
             </div>
-        </footer>
+          </article>
+
+          <article class="card">
+            <span class="icon"><img src="images/apps/satstack.png" alt="" width="160" height="160" loading="lazy"></span>
+            <div class="body">
+              <h3><a href="apps/satstack/">SatStack</a></h3>
+              <p>One number: how close your stack is to a whole coin. Watch-only address, read-only exchange key, or typed in by hand.</p>
+              <p class="meta">
+                <span class="tag price">$0.99</span>
+                <span class="tag">iPhone &amp; iPad</span>
+                <a class="store" href="https://apps.apple.com/us/app/satstack/id6760087522">App&nbsp;Store&nbsp;&#8599;</a>
+              </p>
+            </div>
+          </article>
+
+          <article class="card">
+            <span class="icon"><img src="images/apps/cryptodaily.png" alt="" width="160" height="160" loading="lazy"></span>
+            <div class="body">
+              <h3><a href="https://apps.apple.com/us/app/crypto-daily/id1565481679">Crypto Daily</a></h3>
+              <p>Cryptocurrency news, gathered daily into one feed.</p>
+              <p class="meta">
+                <span class="tag free">Free</span>
+                <span class="tag">iPhone</span>
+                <span class="store">App&nbsp;Store&nbsp;&#8599;</span>
+              </p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+
+      <!-- -------------------------------------------------------- everyday -->
+      <div class="group" id="everyday">
+        <div class="group-head">
+          <h2>Everyday</h2>
+          <span class="note">Finding things, and finding calm</span>
+        </div>
+        <div class="grid">
+
+          <article class="card">
+            <span class="icon"><img src="images/apps/wheredItGo.png" alt="" width="160" height="160" loading="lazy"></span>
+            <div class="body">
+              <h3><a href="games/WheredItGo/">Where'd It Go?</a></h3>
+              <p>Bluetooth signal strength, turned into a warmer-colder hunt for the keys, wallet, or earbuds you have misplaced.</p>
+              <p class="meta">
+                <span class="tag free">Free</span>
+                <span class="tag">iPhone</span>
+                <a class="store" href="https://apps.apple.com/us/app/whered-it-go/id6745577403">App&nbsp;Store&nbsp;&#8599;</a>
+              </p>
+            </div>
+          </article>
+
+          <article class="card">
+            <span class="icon"><img src="images/apps/lauds.png" alt="" width="160" height="160" loading="lazy"></span>
+            <div class="body">
+              <h3><a href="apps/lauds/">Lauds: Latin Mass Times</a></h3>
+              <p>Find the Traditional Latin Mass near you, wherever you are travelling. FSSP, ICKSP, diocesan, and SSPX.</p>
+              <p class="meta">
+                <span class="tag price">$1.99</span>
+                <span class="tag">iPhone</span>
+                <a class="store" href="https://apps.apple.com/us/app/lauds-latin-mass-times/id6774854205">App&nbsp;Store&nbsp;&#8599;</a>
+              </p>
+            </div>
+          </article>
+
+          <article class="card">
+            <span class="icon"><img src="images/apps/stopraging.png" alt="" width="160" height="160" loading="lazy"></span>
+            <div class="body">
+              <h3><a href="apps/stopraging/">StopRaging</a></h3>
+              <p>One tap for the traffic light that ruined your morning — then a breathing prompt, and a shared map proving it is not just you.</p>
+              <p class="meta">
+                <span class="tag free">Free</span>
+                <span class="tag">CarPlay</span>
+                <a class="store" href="https://apps.apple.com/us/app/stopraging/id6759590614">App&nbsp;Store&nbsp;&#8599;</a>
+              </p>
+            </div>
+          </article>
+
+          <article class="card">
+            <span class="icon drawn" aria-hidden="true">
+              <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                <rect width="60" height="60" fill="#123f3b"/>
+                <g stroke="#efb85c" stroke-width="2.2" stroke-linecap="round">
+                  <line x1="30" y1="11" x2="30" y2="27"/>
+                  <line x1="18" y1="15" x2="24" y2="29"/>
+                  <line x1="42" y1="15" x2="36" y2="29"/>
+                  <line x1="10" y1="25" x2="22" y2="33"/>
+                  <line x1="50" y1="25" x2="38" y2="33"/>
+                </g>
+                <path d="M12 41h36" stroke="#6fbfae" stroke-width="2.4" stroke-linecap="round"/>
+                <path d="M18 47h24" stroke="#6fbfae" stroke-width="2.4" stroke-linecap="round" opacity="0.7"/>
+              </svg>
+            </span>
+            <div class="body">
+              <h3><a href="apps/eparchy/">Eparchy</a></h3>
+              <p>An independent directory of Eastern Catholic parishes, missions, and monasteries — with sourced liturgy times and a visible verification date.</p>
+              <p class="meta">
+                <span class="tag soon">Coming soon</span>
+                <span class="tag">iPhone &amp; iPad</span>
+              </p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+
+      <!-- ------------------------------------------------------------- fun -->
+      <div class="group" id="fun">
+        <div class="group-head">
+          <h2>Fun</h2>
+          <span class="note">Not everything needs a business case</span>
+        </div>
+        <div class="grid">
+
+          <article class="card">
+            <span class="icon"><img src="images/apps/winkybat.png" alt="" width="160" height="160" loading="lazy"></span>
+            <div class="body">
+              <h3><a href="apps/winkybat/">Winky Bat</a></h3>
+              <p>A cave flyer with no buttons. The front camera watches your eyes, and every blink beats the bat's wings once.</p>
+              <p class="meta">
+                <span class="tag free">Free</span>
+                <span class="tag">iPhone</span>
+                <a class="store" href="https://apps.apple.com/us/app/winky-bat/id6743685918">App&nbsp;Store&nbsp;&#8599;</a>
+              </p>
+            </div>
+          </article>
+
+          <article class="card">
+            <span class="icon"><img src="images/apps/memegpt.png" alt="" width="160" height="160" loading="lazy"></span>
+            <div class="body">
+              <h3><a href="apps/memegpt/">MemeGPT</a></h3>
+              <p>Snap a photo and get a satirical caption written and burned onto it. No template picker, no caption box.</p>
+              <p class="meta">
+                <span class="tag free">Free</span>
+                <span class="tag">iPhone</span>
+                <a class="store" href="https://apps.apple.com/us/app/memegpt/id6448245199">App&nbsp;Store&nbsp;&#8599;</a>
+              </p>
+            </div>
+          </article>
+
+          <article class="card">
+            <span class="icon"><img src="images/apps/holdtowin.png" alt="" width="160" height="160" loading="lazy"></span>
+            <div class="body">
+              <h3><a href="https://apps.apple.com/us/app/hold-to-win/id1508660707">Hold To Win</a></h3>
+              <p>How long can you hold the button down? That is the entire game, and it is more annoying than it sounds.</p>
+              <p class="meta">
+                <span class="tag free">Free</span>
+                <span class="tag">iPhone</span>
+                <span class="store">App&nbsp;Store&nbsp;&#8599;</span>
+              </p>
+            </div>
+          </article>
+
+        </div>
+      </div>
 
     </div>
-    <!-- /.container -->
+  </section>
 
-    <!-- JavaScript -->
-    <script src="js/jquery-1.10.2.js"></script>
-    <script src="js/bootstrap.js"></script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  <!-- ------------------------------------------------------- browser games -->
+  <section class="legacy">
+    <div class="wrap">
+      <div class="group-head">
+        <h2>Browser games from the archive</h2>
+        <span class="note">Early experiments, still playable</span>
+      </div>
+      <div class="legacy-list">
+        <a href="games/chikuns/">Chikuns <span class="yr">2014</span></a>
+        <a href="games/balloon/">Balloon Destroyer <span class="yr">2014</span></a>
+        <a href="games/nutrition/">Nutrition Expedition <span class="yr">2014</span></a>
+        <a href="games/doyouevensearch/">Do You Even Search <span class="yr">2015</span></a>
+      </div>
+    </div>
+  </section>
 
-  ga('create', 'UA-55772211-1', 'auto');
-  ga('send', 'pageview');
+  <footer>
+    <div class="footer-inner">
+      <span>© 2026 Addicting Apps · West Palm Beach, FL</span>
+      <span class="footer-links">
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="mailto:support@addictingapps.org">support@addictingapps.org</a>
+        <a href="sitemap.xml">Sitemap</a>
+      </span>
+    </div>
+  </footer>
 
-</script>
 </body>
-
 </html>
